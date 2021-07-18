@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const promisify = require('es6-promisify');
 
 //  import all models
-// require('./models/User');
+require('./models/Result');
 
 const db = require('./database');
 const router = require('./routes');
@@ -29,7 +29,7 @@ app.use(session({
   key: process.env.KEY,
   resave: false,
   saveUninitialized: false,
-  store: new MongoStore({ mongooseConnection: mongoose.connection })
+  store: new MongoStore({ mongoUrl: process.env.DATABASE })
 }));
 
 
@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 
 // promisify some callback based APIs
 app.use((req, res, next) => {
-  req.login = promisify(req.login, req);
+  // req.login = promisify(req.login, req);
   next();
 });
 
