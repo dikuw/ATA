@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const promisify = require('es6-promisify');
 
 //  import all models
-require('./models/User');
+// require('./models/User');
 
 const db = require('./database');
 const router = require('./routes');
