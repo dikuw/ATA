@@ -8,7 +8,8 @@
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "mongoose": "^5.13.3",
-    "node": "^16.5.0"
+    "node": "^16.5.0",
+    "nodemon": "^2.0.12"
   },
   "devDependencies": {},
   "scripts": {
