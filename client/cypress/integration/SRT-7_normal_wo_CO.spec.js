@@ -43,7 +43,7 @@ describe('SRT-7 Generic Workflow Normal Path without Change Order', () => {
     // cy.wait('@gqlstandardOperatingProceduresQueryQuery');
     // cy.wait('@gqlItemTypeMetadataQuery');
     cy.wait(['@gqlstandardOperatingProceduresQueryQuery', '@gqlItemTypeMetadataQuery']);
-    //  Error with any combination of the above 2 lines: Error: Cannot retrieve "standardOperatingProcedure": GraphQL error: Query.itemType: access denied
+    //  Error with any combination of the above 3 lines: Error: Cannot retrieve "standardOperatingProcedure": GraphQL error: Query.itemType: access denied
   })
 
   it('Verifies the item is in Draft status', () => {
