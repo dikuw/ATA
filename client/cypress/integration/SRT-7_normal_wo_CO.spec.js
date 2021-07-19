@@ -39,11 +39,10 @@ describe('SRT-7 Generic Workflow Normal Path without Change Order', () => {
   })
 
   it('Opens the item', () => {
-    cy.wait('@gqlstandardOperatingProceduresQueryQuery');
-    //  Error without the above line: Error: Cannot retrieve "standardOperatingProcedure": GraphQL error: Query.itemType: access denied
-    cy.contains('View Item').click();
+    cy.contains('View Item', {"timeout": 10000}).click();
     // cy.wait('@gqlstandardOperatingProceduresQueryQuery');
-    cy.wait('@gqlItemTypeMetadataQuery');
+    // cy.wait('@gqlItemTypeMetadataQuery');
+    cy.wait(['@gqlstandardOperatingProceduresQueryQuery', '@gqlItemTypeMetadataQuery']);
     //  Error with any combination of the above 2 lines: Error: Cannot retrieve "standardOperatingProcedure": GraphQL error: Query.itemType: access denied
   })
 
