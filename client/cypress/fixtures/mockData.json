@@ -1,0 +1,149 @@
+{
+  "data": {
+    "itemType": {
+      "id": "65",
+      "name": "standard_operating_procedure",
+      "userCreatable": true,
+      "displaySlug": "standard-operating-procedures",
+      "workflow": {
+        "id": "8",
+        "name": "generic",
+        "__typename": "Workflow"
+      },
+      "fields": [
+        {
+          "fieldName": "body",
+          "fieldType": "text_field",
+          "userEditable": true,
+          "__typename": "Field"
+        },
+        {
+          "fieldName": "title",
+          "fieldType": "string_field",
+          "userEditable": true,
+          "__typename": "Field"
+        },
+        {
+          "fieldName": "attachment",
+          "fieldType": "attachment_field",
+          "userEditable": true,
+          "__typename": "Field"
+        },
+        {
+          "fieldName": "pdf_data_upload",
+          "fieldType": "boolean_field",
+          "userEditable": false,
+          "__typename": "Field"
+        },
+        {
+          "fieldName": "reason_for_change",
+          "fieldType": "text_field",
+          "userEditable": true,
+          "__typename": "Field"
+        },
+        {
+          "fieldName": "description_of_change",
+          "fieldType": "text_field",
+          "userEditable": true,
+          "__typename": "Field"
+        },
+        {
+          "fieldName": "raw_reference_attachment",
+          "fieldType": "attachment_field",
+          "userEditable": true,
+          "__typename": "Field"
+        }
+      ],
+      "parentSetItemType": null,
+      "permissions": [
+        {
+          "jobRole": {
+            "id": "5",
+            "roleName": "business_lead",
+            "customRoleName": null,
+            "__typename": "JobRole"
+          },
+          "permissionType": "own_record",
+          "currentUserIsPermitted": true,
+          "__typename": "PermissionTemplate"
+        },
+        {
+          "jobRole": {
+            "id": "4",
+            "roleName": "general",
+            "customRoleName": null,
+            "__typename": "JobRole"
+          },
+          "permissionType": "edit_record",
+          "currentUserIsPermitted": false,
+          "__typename": "PermissionTemplate"
+        },
+        {
+          "jobRole": {
+            "id": "4",
+            "roleName": "general",
+            "customRoleName": null,
+            "__typename": "JobRole"
+          },
+          "permissionType": "view_record",
+          "currentUserIsPermitted": false,
+          "__typename": "PermissionTemplate"
+        },
+        {
+          "jobRole": {
+            "id": "4",
+            "roleName": "general",
+            "customRoleName": null,
+            "__typename": "JobRole"
+          },
+          "permissionType": "create_record",
+          "currentUserIsPermitted": false,
+          "__typename": "PermissionTemplate"
+        },
+        {
+          "jobRole": {
+            "id": "9",
+            "roleName": "quality_affairs_lead",
+            "customRoleName": null,
+            "__typename": "JobRole"
+          },
+          "permissionType": "retire_record",
+          "currentUserIsPermitted": false,
+          "__typename": "PermissionTemplate"
+        },
+        {
+          "jobRole": {
+            "id": "9",
+            "roleName": "quality_affairs_lead",
+            "customRoleName": null,
+            "__typename": "JobRole"
+          },
+          "permissionType": "approve_record",
+          "currentUserIsPermitted": false,
+          "__typename": "PermissionTemplate"
+        },
+        {
+          "jobRole": {
+            "id": "9",
+            "roleName": "quality_affairs_lead",
+            "customRoleName": null,
+            "__typename": "JobRole"
+          },
+          "permissionType": "obsolete_record",
+          "currentUserIsPermitted": false,
+          "__typename": "PermissionTemplate"
+        }
+      ],
+      "traceableUpstreamTypes": [],
+      "traceableDownstreamTypes": [
+        "form",
+        "template",
+        "work_instruction",
+        "in_process_inspection",
+        "incoming_quality_inspection",
+        "final_device_inspection"
+      ],
+      "__typename": "ItemType"
+    }
+  }
+}
