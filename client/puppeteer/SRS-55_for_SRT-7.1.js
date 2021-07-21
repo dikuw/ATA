@@ -108,8 +108,7 @@ let results = [];
     await page.waitForTimeout(2000);
     let who = users.filter(user => user.user === owner)[0].userName;
     await page.click('[data-testid="changesButton"]');
-
-    // //  check user (owner)
+    //  check user (owner)
     // await assertText(page, who);
     // //  check date and time
     // now = await formatDate();
