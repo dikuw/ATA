@@ -46,11 +46,15 @@ const filteredItemTypes = itemTypes.filter((el) => {
     await page.waitForTimeout(2000);
     await page.waitForSelector('.MuiButton-textSizeSmall');
     await page.click('.MuiButton-textSizeSmall');
+    await page.waitForTimeout(2000);
+    await page.screenshot({ path: './screenshots/SRT-7.4_Draft.png' });
     //  SRT-7.34 -- Draft -> Under Review
     await page.waitForSelector('#workflow-underReview');
     await page.click('#workflow-underReview');
     await page.waitForSelector('[data-testid="btn-yes"]');
-    await page.click('[data-testid="btn-yes"]') //  Under Review status
+    await page.click('[data-testid="btn-yes"]') //  Under Review
+    await page.waitForTimeout(2000);
+    await page.screenshot({ path: './screenshots/SRT-7.34_UnderReview.png' });
     //  //  logout
     await page.click('#profile-button');
     await page.click('#sign-out');
@@ -85,8 +89,11 @@ const filteredItemTypes = itemTypes.filter((el) => {
     await page.type('#username', owner);
     await page.type('#password', password);
     await page.click('[type="submit"'); //  Owner Approval
+    await page.waitForTimeout(2000);
+    await page.screenshot({ path: './screenshots/SRT-7.1_OwnerApproval.png' });
     //  //  logout
     await page.click('#profile-button');
+    await page.waitForSelector('#sign-out');
     await page.click('#sign-out');
     //  //  login
     await page.waitForSelector('#username');
@@ -112,8 +119,11 @@ const filteredItemTypes = itemTypes.filter((el) => {
     await page.type("#username", approver);
     await page.type("#password", password);
     await page.click('[type="submit"');  // Released status
+    await page.waitForTimeout(4000);
+    await page.screenshot({ path: './screenshots/SRT-7.2_Released.png' });
     //  //  logout
     await page.click('#profile-button');
+    await page.waitForSelector('#sign-out');
     await page.click('#sign-out');
 
     console.log('test passed');
