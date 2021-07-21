@@ -3,11 +3,16 @@ const { Document, Packer, Paragraph, TextRun, ImageRun } = require('docx');
 
 exports.createDoc = (fileName, testTitle, results) => {
   let children = [];
-  
+
   children.push(
     new Paragraph({
       children: [
-        new TextRun(`${testTitle}`),
+        new TextRun(
+          {
+            text: `${testTitle}`,
+            underline: {},
+          },
+        ),
       ],
     })
   );
@@ -19,6 +24,10 @@ exports.createDoc = (fileName, testTitle, results) => {
         children: [
           new TextRun({
             text: `${result}`,
+          }),
+          new TextRun({
+            text: 'test passed',
+            italics: true,
           }),
         ],
       }),
@@ -32,7 +41,8 @@ exports.createDoc = (fileName, testTitle, results) => {
             },
           }),
         ],
-      })
+      }),
+
     );
 
   });

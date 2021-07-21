@@ -61,7 +61,7 @@ let results = [];
     await page.waitForTimeout(2000);
     await page.screenshot({ path: './screenshots/SRT-7.4_Draft.png' });
     results.push({
-      result: 'SRT-7.4 -- Does Not Exist -> Draft... testing passed',
+      result: 'SRT-7.4 -- Does Not Exist -> Draft... ',
       image: 'SRT-7.4_Draft.png',
     });
     //  SRT-7.34 -- Draft -> Under Review
@@ -72,7 +72,7 @@ let results = [];
     await page.waitForTimeout(2000);
     await page.screenshot({ path: './screenshots/SRT-7.34_UnderReview.png' });
     results.push({
-      result: 'SRT-7.34 -- Draft -> Under Review... testing passe',
+      result: 'SRT-7.34 -- Draft -> Under Review... ',
       image: 'SRT-7.34_UnderReview.png',
     });
     //  //  logout
@@ -112,7 +112,7 @@ let results = [];
     await page.waitForTimeout(2000);
     await page.screenshot({ path: './screenshots/SRT-7.1_OwnerApproval.png' });
     results.push({
-      result: 'SRT-7.1 -- Under Review -> Owner Approval... testing passed',
+      result: 'SRT-7.1 -- Under Review -> Owner Approval... ',
       image: 'SRT-7.1_OwnerApproval.png',
     });
     //  //  logout
@@ -146,7 +146,7 @@ let results = [];
     await page.waitForTimeout(4000);
     await page.screenshot({ path: './screenshots/SRT-7.2_Released.png' });
     results.push({
-      result: 'SRT-7.2 -- Owner Approval -> Released... testing passed',
+      result: 'SRT-7.2 -- Owner Approval -> Released... ',
       image: 'SRT-7.2_Released.png',
     });
     //  //  logout
