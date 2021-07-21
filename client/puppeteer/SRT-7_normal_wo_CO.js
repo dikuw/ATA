@@ -18,17 +18,21 @@ const filteredItemTypes = itemTypes.filter((el) => {
 
 (async () => {
 
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ 
+    headless: false,
+    defaultViewport: null,
+    args: ['--start-maximized'] 
+  });
   const page = await browser.newPage();
   await page.goto(tenant);
 
   for (const itemType of filteredItemTypes) {
     const { dataValue, user, owner, approver, module, headerCategory, category } = itemType;
-    //  login
-    await page.type("#username", user);
-    await page.type("#password", password);
+    //  //  login
+    await page.type('#username', user);
+    await page.type('#password', password);
     await page.click('[data-testid="login-button"]');
-    //  create item
+    //  SRT-7.4 -- Does Not Exist -> Draft
     await page.waitForSelector('#create-item-button');
     await page.click('#create-item-button');
     await page.click('[id="mui-component-select-itemType"]');
@@ -42,6 +46,76 @@ const filteredItemTypes = itemTypes.filter((el) => {
     await page.waitForTimeout(2000);
     await page.waitForSelector('.MuiButton-textSizeSmall');
     await page.click('.MuiButton-textSizeSmall');
+    //  SRT-7.34 -- Draft -> Under Review
+    await page.waitForSelector('#workflow-underReview');
+    await page.click('#workflow-underReview');
+    await page.waitForSelector('[data-testid="btn-yes"]');
+    await page.click('[data-testid="btn-yes"]') //  Under Review status
+    //  //  logout
+    await page.click('#profile-button');
+    await page.click('#sign-out');
+    //  //  login
+    await page.waitForSelector('#username');
+    await page.type('#username', owner);
+    await page.type('#password', password);
+    await page.click('[data-testid="login-button"]');
+    //  SRT-7.1 -- Under Review -> Owner Approval -- SRT-7.1
+    await page.waitForSelector('#workspace-selector-button');
+    await page.click('#workspace-selector-button');
+    await page.waitForTimeout(2000);
+    let [el] = await page.$x(`//div[contains(text(), "${module}")]`);
+    await page.waitForTimeout(2000);
+    await el.click();
+    await page.waitForTimeout(2000);
+    if (headerCategory) await page.click(`#${headerCategory}`);
+    await page.waitForSelector(`#${category}`);
+    await page.click(`#${category}`);
+    await page.waitForSelector('tbody.MuiTableBody-root tr:nth-last-child(1)');
+    await page.click('tbody.MuiTableBody-root tr:nth-last-child(1)');
+    await page.waitForSelector('[data-testid="item"] #workflow-ownerApproval');
+    await page.click('[data-testid="item"] #workflow-ownerApproval');
+    await page.click('[data-testid="btn-yes"]');
+    await page.type('#reason-for-change', 'Test RoC');
+    await page.type('#need-description', 'Test DoC');
+    await page.click('#change-summary-submit');
+    await page.click('#transition-modal [type="button"]');
+    await page.type('textarea', 'test justification');
+    await page.click('#justify-next');
+    await page.click('[type="checkbox"]');
+    await page.type('#username', owner);
+    await page.type('#password', password);
+    await page.click('[type="submit"'); //  Owner Approval
+    //  //  logout
+    await page.click('#profile-button');
+    await page.click('#sign-out');
+    //  //  login
+    await page.waitForSelector('#username');
+    await page.type('#username', approver);
+    await page.type('#password', password);
+    await page.click('[data-testid="login-button"]');
+    //  SRT-7.2 -- Owner Approval -> Released -- SRT-7.2
+    await page.waitForSelector('#workspace-selector-button');
+    await page.click('#workspace-selector-button');
+    [el] = await page.$x(`//div[contains(text(), "${module}")]`);
+    await page.waitForTimeout(2000);
+    await el.click();
+    await page.waitForTimeout(2000);
+    if (headerCategory) await page.click(`#${headerCategory}`);
+    await page.waitForSelector(`#${category}`);
+    await page.click(`#${category}`);
+    await page.waitForSelector('tbody.MuiTableBody-root tr:nth-last-child(1)');
+    await page.click('tbody.MuiTableBody-root tr:nth-last-child(1)');
+    await page.waitForSelector('[data-testid="item"] #workflow-released');
+    await page.click('[data-testid="item"] #workflow-released');
+    await page.click('[data-testid="btn-yes"]');
+    await page.click('[type="checkbox"]');
+    await page.type("#username", approver);
+    await page.type("#password", password);
+    await page.click('[type="submit"');  // Released status
+    //  //  logout
+    await page.click('#profile-button');
+    await page.click('#sign-out');
+
     console.log('test passed');
   }
 
