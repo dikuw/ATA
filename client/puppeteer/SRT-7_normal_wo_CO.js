@@ -1,8 +1,18 @@
+//  ** SRT-7 Generic Workflow **  //
+//  This script tests the Generic workflow per SRT-7
+//  2. Normal path without a CO
+//
+//  Any item type using the Generic workflow that is not a singleton can be tested
+//  Item types should be set up in the itemTypes arrary
+//  Include one or more item type prefixes in the itemTypesFilter array to run the test with those item types
+
 const puppeteer = require('puppeteer');
 
 const { users } = require('./data/users');
 const { itemTypes } = require('./data/itemTypes');
 const { tenant } = require('./data/tenant');
+
+const { createDoc } = require('./shared/createOutput');
 
 const password = "testpass0";
 
@@ -15,6 +25,8 @@ const filteredItemTypes = itemTypes.filter((el) => {
     return f === el.itemPrefix;
   });
 });
+
+let results = [];
 
 (async () => {
 
@@ -48,6 +60,10 @@ const filteredItemTypes = itemTypes.filter((el) => {
     await page.click('.MuiButton-textSizeSmall');
     await page.waitForTimeout(2000);
     await page.screenshot({ path: './screenshots/SRT-7.4_Draft.png' });
+    results.push({
+      result: 'SRT-7.4 -- Does Not Exist -> Draft... testing passed',
+      image: 'SRT-7.4_Draft.png',
+    });
     //  SRT-7.34 -- Draft -> Under Review
     await page.waitForSelector('#workflow-underReview');
     await page.click('#workflow-underReview');
@@ -55,6 +71,10 @@ const filteredItemTypes = itemTypes.filter((el) => {
     await page.click('[data-testid="btn-yes"]') //  Under Review
     await page.waitForTimeout(2000);
     await page.screenshot({ path: './screenshots/SRT-7.34_UnderReview.png' });
+    results.push({
+      result: 'SRT-7.34 -- Draft -> Under Review... testing passe',
+      image: 'SRT-7.34_UnderReview.png',
+    });
     //  //  logout
     await page.click('#profile-button');
     await page.click('#sign-out');
@@ -63,7 +83,7 @@ const filteredItemTypes = itemTypes.filter((el) => {
     await page.type('#username', owner);
     await page.type('#password', password);
     await page.click('[data-testid="login-button"]');
-    //  SRT-7.1 -- Under Review -> Owner Approval -- SRT-7.1
+    //  SRT-7.1 -- Under Review -> Owner Approval
     await page.waitForSelector('#workspace-selector-button');
     await page.click('#workspace-selector-button');
     await page.waitForTimeout(2000);
@@ -91,6 +111,10 @@ const filteredItemTypes = itemTypes.filter((el) => {
     await page.click('[type="submit"'); //  Owner Approval
     await page.waitForTimeout(2000);
     await page.screenshot({ path: './screenshots/SRT-7.1_OwnerApproval.png' });
+    results.push({
+      result: 'SRT-7.1 -- Under Review -> Owner Approval... testing passed',
+      image: 'SRT-7.1_OwnerApproval.png',
+    });
     //  //  logout
     await page.click('#profile-button');
     await page.waitForSelector('#sign-out');
@@ -100,7 +124,7 @@ const filteredItemTypes = itemTypes.filter((el) => {
     await page.type('#username', approver);
     await page.type('#password', password);
     await page.click('[data-testid="login-button"]');
-    //  SRT-7.2 -- Owner Approval -> Released -- SRT-7.2
+    //  SRT-7.2 -- Owner Approval -> Released
     await page.waitForSelector('#workspace-selector-button');
     await page.click('#workspace-selector-button');
     [el] = await page.$x(`//div[contains(text(), "${module}")]`);
@@ -121,10 +145,16 @@ const filteredItemTypes = itemTypes.filter((el) => {
     await page.click('[type="submit"');  // Released status
     await page.waitForTimeout(4000);
     await page.screenshot({ path: './screenshots/SRT-7.2_Released.png' });
+    results.push({
+      result: 'SRT-7.2 -- Owner Approval -> Released... testing passed',
+      image: 'SRT-7.2_Released.png',
+    });
     //  //  logout
     await page.click('#profile-button');
     await page.waitForSelector('#sign-out');
     await page.click('#sign-out');
+
+    createDoc('SRT7_2', 'SRT-7 Generic Workflow', results)
 
     console.log('test passed');
   }
