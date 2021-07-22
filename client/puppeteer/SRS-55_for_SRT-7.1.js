@@ -11,8 +11,38 @@
 //  5. SRT-7.93 Approved Draft -> Void
 //  6. SRT-7.98 Retirement Initiated -> Retired
 //  7. SRT-7.107 Owner Approval -> Void
+//
+//  This test also verifies:
+//  SRS-106: Show Audit Trail
+//  I need to be able to view audit trail information for an item.
+//
+//  SRS-268: Audit Trail Data
+//  Audit trails must be recorded and display the following information for each entry:
+//  Timestamp in Format: MMM DD, YYYY HH:MM:SS AM/PM TZN(timezone)
+//  First Name Last Name of user performing the change
+//  V# Transition from >Starting Status< to >Ending Status<
+//  When a transition requires an e-signature, the system must indicate an e-signature was applied. 
+//  The id of the item whose audit trail is displayed shall be indicated. 
+//
+//  SRS-397: Date and Time Source
+//  I need the system to use a source for the generation of the date and timestamp of an audit trail whose access is restricted.  
+//  Users should not be able to change time and date settings in the source used for audit trails. 
+//
+//  SRS-269: Audit Trail Time Zone for Display
+//  I need the audit trail to display the timestamp accurately with respect to the timezone displayed (with an accuracy of +/- 1 minute). 
+//
+//  SRS-322: Audit Trail View Order
+//  As a user, I want audit trail information to be displayed with the newest entry on the top. 
+//
+//  SRS-998: "Reason for" Text Field in Audit Trail
+//  When a workflow requires the user to input a "Reason For" text field 
+//  (e.g., Reason for Void, Reason for Rejection, Reason for Cancel, Reason for Retire, etc), 
+//  the text entered by the user must be displayed in the audit trail.  
 
 const puppeteer = require('puppeteer');
+const expect = require('chai').expect;
+const parse = require('date-fns/parse');
+const differenceInMilliseconds = require('date-fns/differenceInMilliseconds');
 
 const { users } = require('./data/users');
 const { itemTypes } = require('./data/itemTypes');
@@ -31,6 +61,8 @@ const filteredItemTypes = itemTypes.filter((el) => {
     return f === el.itemPrefix;
   });
 });
+
+let timestamp;
 
 let results = [];
 
@@ -104,23 +136,38 @@ let results = [];
     await page.click('[type="checkbox"]');
     await page.type('#username', owner);
     await page.type('#password', password);
+    timestamp = new Date();
     await page.click('[type="submit"'); //  Owner Approval
     await page.waitForTimeout(2000);
     let who = users.filter(user => user.user === owner)[0].userName;
     await page.click('[data-testid="changesButton"]');
     //  check user (owner)
-    // await assertText(page, who);
-    // //  check date and time
-    // now = await formatDate();
-    // console.log(`${action}: ${now}`);
-    // await assertText(page, now.substring(0,now.length - 6));
-    // //  check action
-    // await assertText(page, action);
+    await page.waitForSelector('[data-testid="auditTrailContainer"]');
+    const auditTrailUser = await page.$eval('[data-testid="auditTrailContainer"] > div > div > div ~ div', e => e.innerText);
+    expect(auditTrailUser).to.be.a('string',who);
+    // check date and time
+    let auditTrailDateTime = await page.$eval('[data-testid="auditTrailContainer"] > div > div > div', e => e.innerText);
+    //  //  remove the timezone because "parse" can't handle it
+    auditTrailDateTime = auditTrailDateTime.slice(0, auditTrailDateTime.length - 6);
+    auditTrailDateTime = parse(auditTrailDateTime, 'MMM. dd, yyyy - hh:mm:ss a', new Date());
+    expect(differenceInMilliseconds(timestamp, auditTrailDateTime)).to.be.below(5000);
+    // check action
+    const auditTrailAction = await page.$eval('[data-testid="auditTrailContainer"] > div > div > div ~ div ~ div', e => e.innerText);
+    expect(auditTrailAction).to.match(/Under Review to Owner Approval/i);
 
     await page.screenshot({ path: './screenshots/SRS-55_for_SRT-7.1_OwnerApproval.png' });
     results.push({
       result: 'SRS-55 Audit Trail Entry for Owner Approval... ',
       image: 'SRS-55_for_SRT-7.1_OwnerApproval.png',
+    });
+    results.push({
+      result: 'SRS-106 Show Audit Trail... ',
+    });
+    results.push({
+      result: 'SRS-269 Audit Trail Time Zone for Display... ',
+    });
+    results.push({
+      result: 'SRS-322 Audit Trail View Order... ',
     });
     //  //  logout
     await page.click('#profile-button');
