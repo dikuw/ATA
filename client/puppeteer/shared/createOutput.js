@@ -31,20 +31,22 @@ exports.createDoc = (fileName, testTitle, results) => {
           }),
         ],
       }),
-      new Paragraph({
-        children: [
-          new ImageRun({
-            data: fs.readFileSync(`./screenshots/${image}`),
-            transformation: {
-              width: 400,
-              height: 200,
-            },
-          }),
-        ],
-      }),
-
-    );
-
+    )
+    if (image) {
+      children.push(
+        new Paragraph({
+          children: [
+            new ImageRun({
+              data: fs.readFileSync(`./screenshots/${image}`),
+              transformation: {
+                width: 400,
+                height: 200,
+              },
+            }),
+          ],
+        }),
+      )
+    }
   });
 
   const doc = new Document({
