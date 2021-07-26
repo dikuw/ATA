@@ -20,7 +20,7 @@ const password = "testpass0";
 
 const itemNamePrefix = 'SRT-7noCO';
 
-const itemTypesFilter = ["SOP"];
+const itemTypesFilter = ["SOP", "D-UND"];
 
 const filteredItemTypes = itemTypes.filter((el) => {
   return itemTypesFilter.some((f) => {
@@ -55,13 +55,13 @@ let screenshot = "";
     await page.click('[data-testid="item-type-selector"] #item-name-input');
     await page.type('[data-testid="item-type-selector"] #item-name-input', `${itemNamePrefix}${new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit", hour12: false })}`);                                                                                                  
     await page.waitForSelector('#item-create-btn');
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     await page.click('[data-testid="item-type-selector"] #item-create-btn');
     //  view item in Builder view
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     await page.waitForSelector('.MuiButton-textSizeSmall');
     await page.click('.MuiButton-textSizeSmall');
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     screenshot = 'SRT-7.4_Draft.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
@@ -73,7 +73,7 @@ let screenshot = "";
     await page.click('#workflow-underReview');
     await page.waitForSelector('[data-testid="btn-yes"]');
     await page.click('[data-testid="btn-yes"]') //  Under Review
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     screenshot = 'SRT-7.34_UnderReview.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
@@ -85,12 +85,13 @@ let screenshot = "";
     //  SRT-7.1 -- Under Review -> Owner Approval
     await page.waitForSelector('#workspace-selector-button');
     await page.click('#workspace-selector-button');
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     let [el] = await page.$x(`//div[contains(text(), "${module}")]`);
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     await el.click();
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     if (headerCategory) await page.click(`#${headerCategory}`);
+    await page.waitForTimeout(1000);
     await page.waitForSelector(`#${category}`);
     await page.click(`#${category}`);
     await page.waitForSelector('tbody.MuiTableBody-root tr:nth-last-child(1)');
@@ -108,7 +109,7 @@ let screenshot = "";
     await page.type('#username', owner);
     await page.type('#password', password);
     await page.click('[type="submit"'); //  Owner Approval
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     screenshot = 'SRT-7.1_OwnerApproval.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
@@ -122,10 +123,11 @@ let screenshot = "";
     await page.waitForSelector('#workspace-selector-button');
     await page.click('#workspace-selector-button');
     [el] = await page.$x(`//div[contains(text(), "${module}")]`);
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     await el.click();
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     if (headerCategory) await page.click(`#${headerCategory}`);
+    await page.waitForTimeout(1000);
     await page.waitForSelector(`#${category}`);
     await page.click(`#${category}`);
     await page.waitForSelector('tbody.MuiTableBody-root tr:nth-last-child(1)');
@@ -148,8 +150,9 @@ let screenshot = "";
 
     createDoc('SRT7_2', 'SRT-7 Generic Workflow', results)
 
-    console.log('test passed');
   }
+
+  console.log('test passed');
 
 })();
 
