@@ -13,6 +13,7 @@ const { itemTypes } = require('./data/itemTypes');
 const { tenant } = require('./data/tenant');
 
 const { login } = require('./shared/login');
+const { logout } = require('./shared/logout');
 const { createDoc } = require('./shared/createOutput');
 
 const password = "testpass0";
@@ -42,7 +43,7 @@ let results = [];
   for (const itemType of filteredItemTypes) {
     const { dataValue, user, owner, approver, module, headerCategory, category } = itemType;
 
-    login(page, user);
+    await login(page, user);
     //  SRT-7.4 -- Does Not Exist -> Draft
     await page.waitForSelector('#create-item-button');
     await page.click('#create-item-button');
@@ -74,10 +75,8 @@ let results = [];
       result: 'SRT-7.34 -- Draft -> Under Review... ',
       image: 'SRT-7.34_UnderReview.png',
     });
-    //  //  logout
-    await page.click('#profile-button');
-    await page.click('#sign-out');
-    login(page, owner);
+    await logout(page);
+    await login(page, owner);
     //  SRT-7.1 -- Under Review -> Owner Approval
     await page.waitForSelector('#workspace-selector-button');
     await page.click('#workspace-selector-button');
@@ -111,10 +110,8 @@ let results = [];
       image: 'SRT-7.1_OwnerApproval.png',
     });
     //  //  logout
-    await page.click('#profile-button');
-    await page.waitForSelector('#sign-out');
-    await page.click('#sign-out');
-    login(page, approver);
+    await logout(page);
+    await login(page, approver);
     //  SRT-7.2 -- Owner Approval -> Released
     await page.waitForSelector('#workspace-selector-button');
     await page.click('#workspace-selector-button');
@@ -140,10 +137,7 @@ let results = [];
       result: 'SRT-7.2 -- Owner Approval -> Released... ',
       image: 'SRT-7.2_Released.png',
     });
-    //  //  logout
-    await page.click('#profile-button');
-    await page.waitForSelector('#sign-out');
-    await page.click('#sign-out');
+    await logout(page);
 
     createDoc('SRT7_2', 'SRT-7 Generic Workflow', results)
 
