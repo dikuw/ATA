@@ -29,6 +29,7 @@ const filteredItemTypes = itemTypes.filter((el) => {
 });
 
 let results = [];
+let screenshot = "";
 
 (async () => {
 
@@ -59,10 +60,11 @@ let results = [];
     await page.waitForSelector('.MuiButton-textSizeSmall');
     await page.click('.MuiButton-textSizeSmall');
     await page.waitForTimeout(2000);
-    await page.screenshot({ path: './screenshots/SRT-7.4_Draft.png' });
+    screenshot = 'SRT-7.4_Draft.png';
+    await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
       result: 'SRT-7.4 -- Does Not Exist -> Draft... ',
-      image: 'SRT-7.4_Draft.png',
+      image: screenshot,
     });
     //  SRT-7.34 -- Draft -> Under Review
     await page.waitForSelector('#workflow-underReview');
@@ -70,10 +72,11 @@ let results = [];
     await page.waitForSelector('[data-testid="btn-yes"]');
     await page.click('[data-testid="btn-yes"]') //  Under Review
     await page.waitForTimeout(2000);
-    await page.screenshot({ path: './screenshots/SRT-7.34_UnderReview.png' });
+    screenshot = 'SRT-7.34_UnderReview.png';
+    await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
       result: 'SRT-7.34 -- Draft -> Under Review... ',
-      image: 'SRT-7.34_UnderReview.png',
+      image: screenshot,
     });
     await logout(page);
     await login(page, owner);
@@ -104,10 +107,11 @@ let results = [];
     await page.type('#password', password);
     await page.click('[type="submit"'); //  Owner Approval
     await page.waitForTimeout(2000);
-    await page.screenshot({ path: './screenshots/SRT-7.1_OwnerApproval.png' });
+    screenshot = 'SRT-7.1_OwnerApproval.png';
+    await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
       result: 'SRT-7.1 -- Under Review -> Owner Approval... ',
-      image: 'SRT-7.1_OwnerApproval.png',
+      image: screenshot,
     });
     //  //  logout
     await logout(page);
@@ -132,10 +136,11 @@ let results = [];
     await page.type("#password", password);
     await page.click('[type="submit"');  // Released status
     await page.waitForTimeout(4000);
-    await page.screenshot({ path: './screenshots/SRT-7.2_Released.png' });
+    screenshot = 'SRT-7.2_Released.png';
+    await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
       result: 'SRT-7.2 -- Owner Approval -> Released... ',
-      image: 'SRT-7.2_Released.png',
+      image: screenshot,
     });
     await logout(page);
 
