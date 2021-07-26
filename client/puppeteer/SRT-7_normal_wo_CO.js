@@ -38,7 +38,9 @@ let screenshot = "";
     defaultViewport: null,
     args: ['--start-maximized'] 
   });
+
   const page = await browser.newPage();
+  
   await page.goto(tenant);
 
   for (const itemType of filteredItemTypes) {
