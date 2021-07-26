@@ -41,11 +41,8 @@ let results = [];
 
   for (const itemType of filteredItemTypes) {
     const { dataValue, user, owner, approver, module, headerCategory, category } = itemType;
-    //  //  login
+
     login(page, user);
-    // await page.type('#username', user);
-    // await page.type('#password', password);
-    // await page.click('[data-testid="login-button"]');
     //  SRT-7.4 -- Does Not Exist -> Draft
     await page.waitForSelector('#create-item-button');
     await page.click('#create-item-button');
@@ -80,11 +77,7 @@ let results = [];
     //  //  logout
     await page.click('#profile-button');
     await page.click('#sign-out');
-    //  //  login
-    await page.waitForSelector('#username');
-    await page.type('#username', owner);
-    await page.type('#password', password);
-    await page.click('[data-testid="login-button"]');
+    login(page, owner);
     //  SRT-7.1 -- Under Review -> Owner Approval
     await page.waitForSelector('#workspace-selector-button');
     await page.click('#workspace-selector-button');
@@ -121,11 +114,7 @@ let results = [];
     await page.click('#profile-button');
     await page.waitForSelector('#sign-out');
     await page.click('#sign-out');
-    //  //  login
-    await page.waitForSelector('#username');
-    await page.type('#username', approver);
-    await page.type('#password', password);
-    await page.click('[data-testid="login-button"]');
+    login(page, approver);
     //  SRT-7.2 -- Owner Approval -> Released
     await page.waitForSelector('#workspace-selector-button');
     await page.click('#workspace-selector-button');

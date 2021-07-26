@@ -81,9 +81,6 @@ let results = [];
     const { dataValue, user, owner, approver, module, headerCategory, category } = itemType;
     //  //  login
     login(page, user);
-    // await page.type('#username', user);
-    // await page.type('#password', password);
-    // await page.click('[data-testid="login-button"]');
     //  SRT-7.4 -- Does Not Exist -> Draft
     await page.waitForSelector('#create-item-button');
     await page.click('#create-item-button');
