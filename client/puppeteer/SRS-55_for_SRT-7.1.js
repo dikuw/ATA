@@ -48,6 +48,7 @@ const { users } = require('./data/users');
 const { itemTypes } = require('./data/itemTypes');
 const { tenant } = require('./data/tenant');
 
+const { login } = require('./shared/login');
 const { createDoc } = require('./shared/createOutput');
 
 const password = "testpass0";
@@ -79,9 +80,10 @@ let results = [];
   for (const itemType of filteredItemTypes) {
     const { dataValue, user, owner, approver, module, headerCategory, category } = itemType;
     //  //  login
-    await page.type('#username', user);
-    await page.type('#password', password);
-    await page.click('[data-testid="login-button"]');
+    login(page, user);
+    // await page.type('#username', user);
+    // await page.type('#password', password);
+    // await page.click('[data-testid="login-button"]');
     //  SRT-7.4 -- Does Not Exist -> Draft
     await page.waitForSelector('#create-item-button');
     await page.click('#create-item-button');
