@@ -48,8 +48,7 @@ const { users } = require('./data/users');
 const { itemTypes } = require('./data/itemTypes');
 const { tenant } = require('./data/tenant');
 
-const { logout } = require('./shared/logout');
-const { login } = require('./shared/login');
+const { login, logout, createItem } = require('./shared/shared');
 const { createDoc } = require('./shared/createOutput');
 
 const password = "testpass0";
@@ -84,15 +83,7 @@ let results = [];
 
     await login(page, user);
     //  SRT-7.4 -- Does Not Exist -> Draft
-    await page.waitForSelector('#create-item-button');
-    await page.click('#create-item-button');
-    await page.click('[id="mui-component-select-itemType"]');
-    await page.click(`[data-value="${dataValue}"]`);
-    await page.click('[data-testid="item-type-selector"] #item-name-input');
-    await page.type('[data-testid="item-type-selector"] #item-name-input', `${itemNamePrefix}${new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit", hour12: false })}`);                                                                                                  
-    await page.waitForSelector('#item-create-btn');
-    await page.waitForTimeout(1000);
-    await page.click('[data-testid="item-type-selector"] #item-create-btn');
+    await createItem(page, dataValue, itemNamePrefix);
     //  view item in Builder view
     await page.waitForTimeout(1000);
     await page.waitForSelector('.MuiButton-textSizeSmall');
