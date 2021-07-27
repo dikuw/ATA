@@ -104,11 +104,7 @@ let results = [];
     await page.click('[data-testid="btn-yes"]') //  Under Review
     await page.waitForTimeout(1000);
     logout(page);
-    //  //  login
-    await page.waitForSelector('#username');
-    await page.type('#username', owner);
-    await page.type('#password', password);
-    await page.click('[data-testid="login-button"]');
+    login(page, owner);
     //  SRT-7.1 -- Under Review -> Owner Approval
     await page.waitForSelector('#workspace-selector-button');
     await page.click('#workspace-selector-button');
@@ -167,10 +163,8 @@ let results = [];
     results.push({
       result: 'SRS-322 Audit Trail View Order... ',
     });
-    //  //  logout
-    await page.click('#profile-button');
-    await page.waitForSelector('#sign-out');
-    await page.click('#sign-out');
+    
+    logout(page);
     // //  //  login
     // await page.waitForSelector('#username');
     // await page.type('#username', approver);
