@@ -147,8 +147,8 @@ let results = [];
     //  //  remove the timezone because "parse" can't handle it
     auditTrailDateTime = auditTrailDateTime.slice(0, auditTrailDateTime.length - 6);
     auditTrailDateTime = parse(auditTrailDateTime, 'MMM. dd, yyyy - hh:mm:ss a', new Date());
-    console.log(differenceInMilliseconds(timestamp, auditTrailDateTime));
-    expect(differenceInMilliseconds(timestamp, auditTrailDateTime)).to.be.below(5000);
+    const diff = differenceInMilliseconds(timestamp, auditTrailDateTime);
+    expect(diff).to.be.below(5000);
     // check action
     const auditTrailAction = await page.$eval('[data-testid="auditTrailContainer"] > div > div > div ~ div ~ div', e => e.innerText);
     expect(auditTrailAction).to.match(/Under Review to Owner Approval/i);
@@ -163,7 +163,10 @@ let results = [];
       result: 'SRS-106 Show Audit Trail... ',
     });
     results.push({
-      result: 'SRS-269 Audit Trail Time Zone for Display... ',
+      result: `SRS-269 Audit Trail Time Zone for Display... `,
+    });
+    results.push({
+      result: `SRS-269 Audit Trail timestamp accuracy: ±${diff} milliseconds... `,
     });
     results.push({
       result: 'SRS-322 Audit Trail View Order... ',
