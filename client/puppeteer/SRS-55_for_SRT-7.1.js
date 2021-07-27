@@ -48,7 +48,9 @@ const { users } = require('./data/users');
 const { itemTypes } = require('./data/itemTypes');
 const { tenant } = require('./data/tenant');
 
-const { login, logout, createItem } = require('./shared/shared');
+const { login, logout, createItem, openTableView } = require('./shared/shared');
+const { selectTableViewLastChild, draftToUnderReview } = require('./shared/shared');
+const { underReviewToOwnerApprovalNoChangeOrder, ownerApprovalToReleased } = require('./shared/shared');
 const { createDoc } = require('./shared/createOutput');
 
 const password = "testpass0";
@@ -84,64 +86,31 @@ let results = [];
     await login(page, user);
     //  SRT-7.4 -- Does Not Exist -> Draft
     await createItem(page, dataValue, itemNamePrefix);
-    //  view item in Builder view
-    await page.waitForTimeout(1000);
-    await page.waitForSelector('.MuiButton-textSizeSmall');
-    await page.click('.MuiButton-textSizeSmall');
-    await page.waitForTimeout(1000);
     //  SRT-7.34 -- Draft -> Under Review
-    await page.waitForSelector('#workflow-underReview');
-    await page.click('#workflow-underReview');
-    await page.waitForSelector('[data-testid="btn-yes"]');
-    await page.click('[data-testid="btn-yes"]') //  Under Review
-    await page.waitForTimeout(1000);
+    await draftToUnderReview(page);
     await logout(page);
     await login(page, owner);
+    await openTableView(page, module, headerCategory, category);
+    await selectTableViewLastChild(page);
     //  SRT-7.1 -- Under Review -> Owner Approval
-    await page.waitForSelector('#workspace-selector-button');
-    await page.click('#workspace-selector-button');
-    await page.waitForTimeout(1000);
-    let [el] = await page.$x(`//div[contains(text(), "${module}")]`);
-    await page.waitForTimeout(1000);
-    await el.click();
-    await page.waitForTimeout(1000);
-    if (headerCategory) await page.click(`#${headerCategory}`);
-    await page.waitForSelector(`#${category}`);
-    await page.click(`#${category}`);
-    await page.waitForSelector('tbody.MuiTableBody-root tr:nth-last-child(1)');
-    await page.click('tbody.MuiTableBody-root tr:nth-last-child(1)');
-    await page.waitForTimeout(1000);
-    await page.waitForSelector('[data-testid="item"] #workflow-ownerApproval');
-    await page.click('[data-testid="item"] #workflow-ownerApproval');
-    await page.click('[data-testid="btn-yes"]');
-    await page.type('#reason-for-change', 'Test RoC');
-    await page.type('#need-description', 'Test DoC');
-    await page.click('#change-summary-submit');
-    await page.click('#transition-modal [type="button"]');
-    await page.type('textarea', 'test justification');
-    await page.click('#justify-next');
-    await page.click('[type="checkbox"]');
-    await page.type('#username', owner);
-    await page.type('#password', password);
-    timestamp = new Date();
-    await page.click('[type="submit"'); //  Owner Approval
-    await page.waitForTimeout(1000);
+    await underReviewToOwnerApprovalNoChangeOrder(page, owner);
 
-    let who = users.filter(user => user.user === owner)[0].userName;
+    timestamp = new Date();
     await page.click('[data-testid="changesButton"]');
     //  check user (owner)
+    let who = users.filter(user => user.user === owner)[0].userName;
     await page.waitForSelector('[data-testid="auditTrailContainer"]');
-    const auditTrailUser = await page.$eval('[data-testid="auditTrailContainer"] > div > div > div ~ div', e => e.innerText);
+    let auditTrailUser = await page.$eval('[data-testid="auditTrailContainer"] > div > div > div ~ div', e => e.innerText);
     expect(auditTrailUser).to.be.a('string',who);
     // check date and time
     let auditTrailDateTime = await page.$eval('[data-testid="auditTrailContainer"] > div > div > div', e => e.innerText);
     //  //  remove the timezone because "parse" can't handle it
     auditTrailDateTime = auditTrailDateTime.slice(0, auditTrailDateTime.length - 6);
     auditTrailDateTime = parse(auditTrailDateTime, 'MMM. dd, yyyy - hh:mm:ss a', new Date());
-    const diff = differenceInMilliseconds(timestamp, auditTrailDateTime);
+    let diff = differenceInMilliseconds(timestamp, auditTrailDateTime);
     expect(diff).to.be.below(5000);
     // check action
-    const auditTrailAction = await page.$eval('[data-testid="auditTrailContainer"] > div > div > div ~ div ~ div', e => e.innerText);
+    let auditTrailAction = await page.$eval('[data-testid="auditTrailContainer"] > div > div > div ~ div ~ div', e => e.innerText);
     expect(auditTrailAction).to.match(/Under Review to Owner Approval/i);
 
     screenshot = "SRS-55_for_SRT-7.1_OwnerApproval.png";
@@ -164,40 +133,51 @@ let results = [];
     });
 
     await logout(page);
-    // //  //  login
-    // await page.waitForSelector('#username');
-    // await page.type('#username', approver);
-    // await page.type('#password', password);
-    // await page.click('[data-testid="login-button"]');
-    // //  SRT-7.2 -- Owner Approval -> Released
-    // await page.waitForSelector('#workspace-selector-button');
-    // await page.click('#workspace-selector-button');
-    // [el] = await page.$x(`//div[contains(text(), "${module}")]`);
-    // await page.waitForTimeout(1000);
-    // await el.click();
-    // await page.waitForTimeout(1000);
-    // if (headerCategory) await page.click(`#${headerCategory}`);
-    // await page.waitForSelector(`#${category}`);
-    // await page.click(`#${category}`);
-    // await page.waitForSelector('tbody.MuiTableBody-root tr:nth-last-child(1)');
-    // await page.click('tbody.MuiTableBody-root tr:nth-last-child(1)');
-    // await page.waitForSelector('[data-testid="item"] #workflow-released');
-    // await page.click('[data-testid="item"] #workflow-released');
-    // await page.click('[data-testid="btn-yes"]');
-    // await page.click('[type="checkbox"]');
-    // await page.type("#username", approver);
-    // await page.type("#password", password);
-    // await page.click('[type="submit"');  // Released status
-    // await page.waitForTimeout(4000);
-    // await page.screenshot({ path: './screenshots/SRT-7.2_Released.png' });
-    // results.push({
-    //   result: 'SRT-7.2 -- Owner Approval -> Released... ',
-    //   image: 'SRT-7.2_Released.png',
-    // });
-    // //  //  logout
-    // await page.click('#profile-button');
-    // await page.waitForSelector('#sign-out');
-    // await page.click('#sign-out');
+    await login(page, approver);
+    await openTableView(page, module, headerCategory, category);
+    await selectTableViewLastChild(page);
+    //  SRT-7.2 -- Owner Approval -> Released
+    await ownerApprovalToReleased(page, approver);
+
+    timestamp = new Date();
+    await page.waitForTimeout(4000);
+    await page.click('[data-testid="changesButton"]');
+    //  check user (approver)
+    who = users.filter(user => user.user === approver)[0].userName;
+    await page.waitForSelector('[data-testid="auditTrailContainer"]');
+    auditTrailUser = await page.$eval('[data-testid="auditTrailContainer"] > div > div > div ~ div', e => e.innerText);
+    expect(auditTrailUser).to.be.a('string',who);
+    // check date and time
+    auditTrailDateTime = await page.$eval('[data-testid="auditTrailContainer"] > div > div > div', e => e.innerText);
+    //  //  remove the timezone because "parse" can't handle it
+    auditTrailDateTime = auditTrailDateTime.slice(0, auditTrailDateTime.length - 6);
+    auditTrailDateTime = parse(auditTrailDateTime, 'MMM. dd, yyyy - hh:mm:ss a', new Date());
+    diff = differenceInMilliseconds(timestamp, auditTrailDateTime);
+    expect(diff).to.be.below(5000);
+    // check action
+    auditTrailAction = await page.$eval('[data-testid="auditTrailContainer"] > div > div > div ~ div ~ div', e => e.innerText);
+    expect(auditTrailAction).to.match(/Owner Approval to Released/i);
+
+    screenshot = "SRS-55_for_SRT-7.1_Release.png";
+    await page.screenshot({ path: `./screenshots/${screenshot}` });
+    results.push({
+      result: 'SRS-55 Audit Trail Entry for Release... ',
+      image: screenshot,
+    });
+    results.push({
+      result: 'SRS-106 Show Audit Trail... ',
+    });
+    results.push({
+      result: `SRS-269 Audit Trail Time Zone for Display... `,
+    });
+    results.push({
+      result: `SRS-269 Audit Trail timestamp accuracy: ±${diff} milliseconds... `,
+    });
+    results.push({
+      result: 'SRS-322 Audit Trail View Order... ',
+    });
+
+    await logout(page);
 
     createDoc('SSRS55_SRT-7_1', 'SRS-55 Audit Trail Entries', results)
 
