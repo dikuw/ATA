@@ -48,6 +48,7 @@ const { users } = require('./data/users');
 const { itemTypes } = require('./data/itemTypes');
 const { tenant } = require('./data/tenant');
 
+const { logout } = require('./shared/logout');
 const { login } = require('./shared/login');
 const { createDoc } = require('./shared/createOutput');
 
@@ -79,7 +80,7 @@ let results = [];
 
   for (const itemType of filteredItemTypes) {
     const { dataValue, user, owner, approver, module, headerCategory, category } = itemType;
-    //  //  login
+
     login(page, user);
     //  SRT-7.4 -- Does Not Exist -> Draft
     await page.waitForSelector('#create-item-button');
@@ -102,9 +103,7 @@ let results = [];
     await page.waitForSelector('[data-testid="btn-yes"]');
     await page.click('[data-testid="btn-yes"]') //  Under Review
     await page.waitForTimeout(2000);
-    //  //  logout
-    await page.click('#profile-button');
-    await page.click('#sign-out');
+    logout(page);
     //  //  login
     await page.waitForSelector('#username');
     await page.type('#username', owner);
