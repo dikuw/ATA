@@ -90,19 +90,19 @@ let results = [];
     await page.click('[data-testid="item-type-selector"] #item-name-input');
     await page.type('[data-testid="item-type-selector"] #item-name-input', `${itemNamePrefix}${new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit", hour12: false })}`);                                                                                                  
     await page.waitForSelector('#item-create-btn');
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     await page.click('[data-testid="item-type-selector"] #item-create-btn');
     //  view item in Builder view
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     await page.waitForSelector('.MuiButton-textSizeSmall');
     await page.click('.MuiButton-textSizeSmall');
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     //  SRT-7.34 -- Draft -> Under Review
     await page.waitForSelector('#workflow-underReview');
     await page.click('#workflow-underReview');
     await page.waitForSelector('[data-testid="btn-yes"]');
     await page.click('[data-testid="btn-yes"]') //  Under Review
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     logout(page);
     //  //  login
     await page.waitForSelector('#username');
@@ -112,11 +112,11 @@ let results = [];
     //  SRT-7.1 -- Under Review -> Owner Approval
     await page.waitForSelector('#workspace-selector-button');
     await page.click('#workspace-selector-button');
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     let [el] = await page.$x(`//div[contains(text(), "${module}")]`);
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     await el.click();
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     if (headerCategory) await page.click(`#${headerCategory}`);
     await page.waitForSelector(`#${category}`);
     await page.click(`#${category}`);
@@ -136,7 +136,7 @@ let results = [];
     await page.type('#password', password);
     timestamp = new Date();
     await page.click('[type="submit"'); //  Owner Approval
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
     let who = users.filter(user => user.user === owner)[0].userName;
     await page.click('[data-testid="changesButton"]');
     //  check user (owner)
@@ -180,9 +180,9 @@ let results = [];
     // await page.waitForSelector('#workspace-selector-button');
     // await page.click('#workspace-selector-button');
     // [el] = await page.$x(`//div[contains(text(), "${module}")]`);
-    // await page.waitForTimeout(2000);
+    // await page.waitForTimeout(1000);
     // await el.click();
-    // await page.waitForTimeout(2000);
+    // await page.waitForTimeout(1000);
     // if (headerCategory) await page.click(`#${headerCategory}`);
     // await page.waitForSelector(`#${category}`);
     // await page.click(`#${category}`);
