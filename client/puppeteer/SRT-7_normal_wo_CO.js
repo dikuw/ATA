@@ -16,9 +16,9 @@ const { selectTableViewLastChild, draftToUnderReview } = require('./shared/share
 const { underReviewToOwnerApprovalNoChangeOrder, ownerApprovalToReleased } = require('./shared/shared');
 const { createDoc } = require('./shared/createOutput');
 
-const itemNamePrefix = 'SRT-7noCO';
+const itemNamePrefix = 'SRT-7 Normal Path without CO';
 
-const itemTypesFilter = [];
+const itemTypesFilter = ["WI"];
 
 let filteredItemTypes = itemTypes.filter((el) => {
   return itemTypesFilter.some((f) => {

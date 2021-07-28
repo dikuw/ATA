@@ -67,7 +67,8 @@ exports.underReviewToOwnerApprovalNoChangeOrder = async (page, owner) => {
   await page.type('#need-description', 'Test DoC');
   await page.click('#change-summary-submit');
   await page.click('#transition-modal [type="button"]');
-  await page.type('textarea', 'test justification');
+  await page.waitForSelector('#change-justify');
+  await page.type('#change-justify', 'test justification');
   await page.click('#justify-next');
   await page.click('[type="checkbox"]');
   await page.type('#username', owner);
