@@ -101,5 +101,7 @@ const filteredItemTypes = itemTypes.filter((el) => {
 
   }
 
+  await browser.close();
+
 })();
 
