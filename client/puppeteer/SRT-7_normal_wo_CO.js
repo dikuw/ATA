@@ -21,7 +21,7 @@ const password = "testpass0";
 
 const itemNamePrefix = 'SRT-7noCO';
 
-const itemTypesFilter = ["SOP"];
+const itemTypesFilter = ["SOP", "DRV"];
 
 const filteredItemTypes = itemTypes.filter((el) => {
   return itemTypesFilter.some((f) => {
@@ -45,7 +45,7 @@ let screenshot = "";
   await page.goto(tenant);
 
   for (const itemType of filteredItemTypes) {
-    const { dataValue, user, owner, approver, module, headerCategory, category } = itemType;
+    const { itemPrefix, dataValue, user, owner, approver, module, headerCategory, category } = itemType;
 
     await login(page, user);
     //  SRT-7.4 -- Does Not Exist -> Draft
@@ -54,7 +54,7 @@ let screenshot = "";
     screenshot = 'SRT-7.4_Draft.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
-      result: 'SRT-7.4 -- Does Not Exist -> Draft... ',
+      result: `SRT-7.4 -- Does Not Exist -> Draft (${itemPrefix})... `,
       image: screenshot,
     });
     //  SRT-7.34 -- Draft -> Under Review
@@ -63,7 +63,7 @@ let screenshot = "";
     screenshot = 'SRT-7.34_UnderReview.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
-      result: 'SRT-7.34 -- Draft -> Under Review... ',
+      result: `SRT-7.34 -- Draft -> Under Review (${itemPrefix})... `,
       image: screenshot,
     });
     await logout(page);
@@ -76,7 +76,7 @@ let screenshot = "";
     screenshot = 'SRT-7.1_OwnerApproval.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
-      result: 'SRT-7.1 -- Under Review -> Owner Approval... ',
+      result: `SRT-7.1 -- Under Review -> Owner Approval (${itemPrefix})... `,
       image: screenshot,
     });
     //  //  logout
@@ -90,12 +90,12 @@ let screenshot = "";
     await page.waitForTimeout(4000);
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
-      result: 'SRT-7.2 -- Owner Approval -> Released... ',
+      result: `SRT-7.2 -- Owner Approval -> Released (${itemPrefix})... `,
       image: screenshot,
     });
     await logout(page);
 
-    createDoc('SRT7_2', 'SRT-7 Generic Workflow', results)
+    createDoc('SRT7_2', `SRT-7 Generic Workflow: ${itemPrefix}`, results)
 
   }
 

@@ -9,6 +9,7 @@ exports.login = async (page, username) => {
 
 exports.logout = async (page) => {
   await page.click('#profile-button');
+  await page.waitForTimeout(1000);
   await page.waitForSelector('#sign-out');
   await page.click('#sign-out');
 };
@@ -39,6 +40,7 @@ exports.openTableView = async (page, module, headerCategory, category) => {
   await el.click();
   await page.waitForTimeout(1000);
   if (headerCategory) await page.click(`#${headerCategory}`);
+  await page.waitForTimeout(1000);
   await page.waitForSelector(`#${category}`);
   await page.click(`#${category}`);
 };
