@@ -18,7 +18,8 @@ const { createDoc } = require('./shared/createOutput');
 
 const itemNamePrefix = 'SRT-7 Normal Path without CO';
 
-const itemTypesFilter = ["WI"];
+const itemTypesFilter = [];
+const exclude = ["DRV", "D-UND", "D-REQ", "FRM", "RKN"];
 
 let filteredItemTypes = itemTypes.filter((el) => {
   return itemTypesFilter.some((f) => {
@@ -28,6 +29,12 @@ let filteredItemTypes = itemTypes.filter((el) => {
 
 if (Object.keys(filteredItemTypes).length === 0) {
   filteredItemTypes = itemTypes;
+  let excludedItemTypes = itemTypes.filter((el) => {
+    return exclude.some((f) => {
+      return f !== el.itemPrefix;
+    });
+  });
+  filteredItemTypes = excludedItemTypes;
 }
 
 (async () => {
@@ -98,7 +105,7 @@ if (Object.keys(filteredItemTypes).length === 0) {
 
     createDoc(`SRT-7 Normal Path wo CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow: ${itemPrefix}`, results);
 
-    console.log(`SRT-7 Generic Workflow: ${itemPrefix} test passed`);
+    console.log(`${sort}. SRT-7 Generic Workflow: ${itemPrefix} test passed`);
 
   }
 
