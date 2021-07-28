@@ -53,9 +53,9 @@ const { selectTableViewLastChild, draftToUnderReview } = require('./shared/share
 const { underReviewToOwnerApprovalNoChangeOrder, ownerApprovalToReleased } = require('./shared/shared');
 const { createDoc } = require('./shared/createOutput');
 
-const itemNamePrefix = 'SRS-55_for_SRT-7.1';
+const itemNamePrefix = 'SRS-55 for SRT-7.1';
 
-const itemTypesFilter = ["VER"];
+const itemTypesFilter = ["POL"];
 
 let filteredItemTypes = itemTypes.filter((el) => {
   return itemTypesFilter.some((f) => {
@@ -80,7 +80,7 @@ if (Object.keys(filteredItemTypes).length === 0) {
   await page.goto('https://test-company.qms-internal-validation.nemedio.com/login');
 
   for (const itemType of filteredItemTypes) {
-    const { itemPrefix, dataValue, user, owner, approver, module, headerCategory, category } = itemType;
+    const { itemPrefix, dataValue, user, owner, approver, module, headerCategory, category, sort } = itemType;
 
     let results = [];
     let screenshot = "";
@@ -182,7 +182,7 @@ if (Object.keys(filteredItemTypes).length === 0) {
 
     await logout(page);
 
-    createDoc(`SSRS55_SRT-7_1 ${itemPrefix}`, `SRS-55 Audit Trail Entries: ${itemPrefix}`, results)
+    createDoc(`SRS-55 for SRT-7 Normal Path wo CO ${sort}. ${itemPrefix}`, `SRS-55 Audit Trail Entries: ${itemPrefix}`, results)
 
     console.log(`SRS-55 Audit Trail Entries: ${itemPrefix} test passed`);
   }

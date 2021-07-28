@@ -22,7 +22,7 @@ exports.createItem = async (page, dataValue, itemNamePrefix) => {
   await page.click('[id="mui-component-select-itemType"]');
   await page.click(`[data-value="${dataValue}"]`);
   await page.click('[data-testid="item-type-selector"] #item-name-input');
-  await page.type('[data-testid="item-type-selector"] #item-name-input', `${itemNamePrefix}${new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit", hour12: false })}`);                                                                                                  
+  await page.type('[data-testid="item-type-selector"] #item-name-input', `${itemNamePrefix} ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: "2-digit", hour12: false })}`);                                                                                                  
   await page.waitForSelector('#item-create-btn');
   await page.waitForTimeout(1000);
   await page.click('[data-testid="item-type-selector"] #item-create-btn');
