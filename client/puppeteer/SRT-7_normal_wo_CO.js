@@ -18,7 +18,7 @@ const { createDoc } = require('./shared/createOutput');
 
 const itemNamePrefix = 'SRT-7noCO';
 
-const itemTypesFilter = ["D-REQ"];
+const itemTypesFilter = [];
 
 let filteredItemTypes = itemTypes.filter((el) => {
   return itemTypesFilter.some((f) => {
@@ -96,7 +96,7 @@ if (Object.keys(filteredItemTypes).length === 0) {
     });
     await logout(page);
 
-    createDoc(`${sort}. SRT-7 Normal Path wo CO for item type ${itemPrefix}`, `SRT-7 Generic Workflow: ${itemPrefix}`, results)
+    createDoc(`SRT-7 Normal Path wo CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow: ${itemPrefix}`, results)
 
     console.log(`SRT-7 Generic Workflow: ${itemPrefix} test passed`);
 
