@@ -8,7 +8,6 @@
 
 const puppeteer = require('puppeteer');
 
-const { users } = require('./data/users');
 const { itemTypes } = require('./data/itemTypes');
 const { tenant } = require('./data/tenant');
 
@@ -17,20 +16,17 @@ const { selectTableViewLastChild, draftToUnderReview } = require('./shared/share
 const { underReviewToOwnerApprovalNoChangeOrder, ownerApprovalToReleased } = require('./shared/shared');
 const { createDoc } = require('./shared/createOutput');
 
-const password = "testpass0";
-
 const itemNamePrefix = 'SRT-7noCO';
 
-const itemTypesFilter = ["POL", "DRV"];
+const itemTypesFilter = [];
 
-const filteredItemTypes = itemTypes.filter((el) => {
+let filteredItemTypes = itemTypes.filter((el) => {
   return itemTypesFilter.some((f) => {
     return f === el.itemPrefix;
   });
 });
 
 if (Object.keys(filteredItemTypes).length === 0) {
-  console.log('here');
   filteredItemTypes = itemTypes;
 }
 
@@ -47,7 +43,7 @@ if (Object.keys(filteredItemTypes).length === 0) {
   await page.goto(tenant);
 
   for (const itemType of filteredItemTypes) {
-    const { itemPrefix, dataValue, user, owner, approver, module, headerCategory, category } = itemType;
+    const { itemPrefix, dataValue, user, owner, approver, module, headerCategory, category, sort } = itemType;
 
     let results = [];
     let screenshot = "";
@@ -100,7 +96,7 @@ if (Object.keys(filteredItemTypes).length === 0) {
     });
     await logout(page);
 
-    createDoc(`SRT7_2 ${itemPrefix}`, `SRT-7 Generic Workflow: ${itemPrefix}`, results)
+    createDoc(`${sort} SRT7_2 ${itemPrefix}`, `SRT-7 Generic Workflow: ${itemPrefix}`, results)
 
     console.log(`SRT-7 Generic Workflow: ${itemPrefix} test passed`);
 

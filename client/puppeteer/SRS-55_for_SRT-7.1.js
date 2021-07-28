@@ -64,7 +64,6 @@ let filteredItemTypes = itemTypes.filter((el) => {
 });
 
 if (Object.keys(filteredItemTypes).length === 0) {
-  console.log('here');
   filteredItemTypes = itemTypes;
 }
 
