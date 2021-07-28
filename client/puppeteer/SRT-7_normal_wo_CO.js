@@ -12,7 +12,9 @@ const { users } = require('./data/users');
 const { itemTypes } = require('./data/itemTypes');
 const { tenant } = require('./data/tenant');
 
-const { login, logout, createItem } = require('./shared/shared');
+const { login, logout, createItem, openTableView } = require('./shared/shared');
+const { selectTableViewLastChild, draftToUnderReview } = require('./shared/shared');
+const { underReviewToOwnerApprovalNoChangeOrder, ownerApprovalToReleased } = require('./shared/shared');
 const { createDoc } = require('./shared/createOutput');
 
 const password = "testpass0";
@@ -48,6 +50,7 @@ let screenshot = "";
     await login(page, user);
     //  SRT-7.4 -- Does Not Exist -> Draft
     await createItem(page, dataValue, itemNamePrefix);
+    await page.waitForTimeout(2000);
     screenshot = 'SRT-7.4_Draft.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
@@ -55,11 +58,8 @@ let screenshot = "";
       image: screenshot,
     });
     //  SRT-7.34 -- Draft -> Under Review
-    await page.waitForSelector('#workflow-underReview');
-    await page.click('#workflow-underReview');
-    await page.waitForSelector('[data-testid="btn-yes"]');
-    await page.click('[data-testid="btn-yes"]') //  Under Review
-    await page.waitForTimeout(1000);
+    await draftToUnderReview(page);
+    await page.waitForTimeout(2000);
     screenshot = 'SRT-7.34_UnderReview.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
@@ -68,34 +68,11 @@ let screenshot = "";
     });
     await logout(page);
     await login(page, owner);
+    await openTableView(page, module, headerCategory, category);
+    await selectTableViewLastChild(page);
     //  SRT-7.1 -- Under Review -> Owner Approval
-    await page.waitForSelector('#workspace-selector-button');
-    await page.click('#workspace-selector-button');
-    await page.waitForTimeout(1000);
-    let [el] = await page.$x(`//div[contains(text(), "${module}")]`);
-    await page.waitForTimeout(1000);
-    await el.click();
-    await page.waitForTimeout(1000);
-    if (headerCategory) await page.click(`#${headerCategory}`);
-    await page.waitForTimeout(1000);
-    await page.waitForSelector(`#${category}`);
-    await page.click(`#${category}`);
-    await page.waitForSelector('tbody.MuiTableBody-root tr:nth-last-child(1)');
-    await page.click('tbody.MuiTableBody-root tr:nth-last-child(1)');
-    await page.waitForSelector('[data-testid="item"] #workflow-ownerApproval');
-    await page.click('[data-testid="item"] #workflow-ownerApproval');
-    await page.click('[data-testid="btn-yes"]');
-    await page.type('#reason-for-change', 'Test RoC');
-    await page.type('#need-description', 'Test DoC');
-    await page.click('#change-summary-submit');
-    await page.click('#transition-modal [type="button"]');
-    await page.type('textarea', 'test justification');
-    await page.click('#justify-next');
-    await page.click('[type="checkbox"]');
-    await page.type('#username', owner);
-    await page.type('#password', password);
-    await page.click('[type="submit"'); //  Owner Approval
-    await page.waitForTimeout(1000);
+    await underReviewToOwnerApprovalNoChangeOrder(page, owner);
+    await page.waitForTimeout(2000);
     screenshot = 'SRT-7.1_OwnerApproval.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
@@ -105,28 +82,12 @@ let screenshot = "";
     //  //  logout
     await logout(page);
     await login(page, approver);
+    await openTableView(page, module, headerCategory, category);
+    await selectTableViewLastChild(page);
     //  SRT-7.2 -- Owner Approval -> Released
-    await page.waitForSelector('#workspace-selector-button');
-    await page.click('#workspace-selector-button');
-    [el] = await page.$x(`//div[contains(text(), "${module}")]`);
-    await page.waitForTimeout(1000);
-    await el.click();
-    await page.waitForTimeout(1000);
-    if (headerCategory) await page.click(`#${headerCategory}`);
-    await page.waitForTimeout(1000);
-    await page.waitForSelector(`#${category}`);
-    await page.click(`#${category}`);
-    await page.waitForSelector('tbody.MuiTableBody-root tr:nth-last-child(1)');
-    await page.click('tbody.MuiTableBody-root tr:nth-last-child(1)');
-    await page.waitForSelector('[data-testid="item"] #workflow-released');
-    await page.click('[data-testid="item"] #workflow-released');
-    await page.click('[data-testid="btn-yes"]');
-    await page.click('[type="checkbox"]');
-    await page.type("#username", approver);
-    await page.type("#password", password);
-    await page.click('[type="submit"');  // Released status
-    await page.waitForTimeout(4000);
+    await ownerApprovalToReleased(page, approver);
     screenshot = 'SRT-7.2_Released.png';
+    await page.waitForTimeout(4000);
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
       result: 'SRT-7.2 -- Owner Approval -> Released... ',
