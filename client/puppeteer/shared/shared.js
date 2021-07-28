@@ -46,6 +46,7 @@ exports.openTableView = async (page, module, headerCategory, category) => {
 };
 
 exports.selectTableViewLastChild = async (page) => {
+  await page.waitForTimeout(1000);
   await page.waitForSelector('tbody.MuiTableBody-root tr:nth-last-child(1)');
   await page.click('tbody.MuiTableBody-root tr:nth-last-child(1)');
   await page.waitForTimeout(1000);

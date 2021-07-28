@@ -21,16 +21,13 @@ const password = "testpass0";
 
 const itemNamePrefix = 'SRT-7noCO';
 
-const itemTypesFilter = ["SOP", "DRV"];
+const itemTypesFilter = ["POL", "DRV"];
 
 const filteredItemTypes = itemTypes.filter((el) => {
   return itemTypesFilter.some((f) => {
     return f === el.itemPrefix;
   });
 });
-
-let results = [];
-let screenshot = "";
 
 (async () => {
 
@@ -47,6 +44,9 @@ let screenshot = "";
   for (const itemType of filteredItemTypes) {
     const { itemPrefix, dataValue, user, owner, approver, module, headerCategory, category } = itemType;
 
+    let results = [];
+    let screenshot = "";
+
     await login(page, user);
     //  SRT-7.4 -- Does Not Exist -> Draft
     await createItem(page, dataValue, itemNamePrefix);
@@ -54,7 +54,7 @@ let screenshot = "";
     screenshot = 'SRT-7.4_Draft.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
-      result: `SRT-7.4 -- Does Not Exist -> Draft (${itemPrefix})... `,
+      result: `SRT-7.4 -- Does Not Exist -> Draft... `,
       image: screenshot,
     });
     //  SRT-7.34 -- Draft -> Under Review
@@ -63,7 +63,7 @@ let screenshot = "";
     screenshot = 'SRT-7.34_UnderReview.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
-      result: `SRT-7.34 -- Draft -> Under Review (${itemPrefix})... `,
+      result: `SRT-7.34 -- Draft -> Under Review... `,
       image: screenshot,
     });
     await logout(page);
@@ -76,7 +76,7 @@ let screenshot = "";
     screenshot = 'SRT-7.1_OwnerApproval.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
-      result: `SRT-7.1 -- Under Review -> Owner Approval (${itemPrefix})... `,
+      result: `SRT-7.1 -- Under Review -> Owner Approval... `,
       image: screenshot,
     });
     //  //  logout
@@ -90,16 +90,16 @@ let screenshot = "";
     await page.waitForTimeout(4000);
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
-      result: `SRT-7.2 -- Owner Approval -> Released (${itemPrefix})... `,
+      result: `SRT-7.2 -- Owner Approval -> Released... `,
       image: screenshot,
     });
     await logout(page);
 
-    createDoc('SRT7_2', `SRT-7 Generic Workflow: ${itemPrefix}`, results)
+    createDoc(`SRT7_2 ${itemPrefix}`, `SRT-7 Generic Workflow: ${itemPrefix}`, results)
+
+    console.log(`SRT-7 Generic Workflow: ${itemPrefix} test passed`);
 
   }
-
-  console.log('test passed');
 
 })();
 
