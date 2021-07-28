@@ -48,11 +48,6 @@ let screenshot = "";
     await login(page, user);
     //  SRT-7.4 -- Does Not Exist -> Draft
     await createItem(page, dataValue, itemNamePrefix);
-    //  view item in Builder view
-    // await page.waitForTimeout(1000);
-    // await page.waitForSelector('.MuiButton-textSizeSmall');
-    // await page.click('.MuiButton-textSizeSmall');
-    // await page.waitForTimeout(1000);
     screenshot = 'SRT-7.4_Draft.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
