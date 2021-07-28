@@ -26,7 +26,7 @@ exports.itemTypes = [
   {
     itemPrefix: "D-REQ",
     title: "Requirements Documents",
-    dataValue: "standard_operating_procedure",
+    dataValue: "requirements_document",
     module: "Design History File",
     headerCategory: "category-design-inputs",
     category: "category-requirements-doc",
