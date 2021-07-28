@@ -55,7 +55,7 @@ const { createDoc } = require('./shared/createOutput');
 
 const itemNamePrefix = 'SRS-55_for_SRT-7.1';
 
-const itemTypesFilter = ["POL"];
+const itemTypesFilter = ["POL", "D-RAD"];
 
 const filteredItemTypes = itemTypes.filter((el) => {
   return itemTypesFilter.some((f) => {
