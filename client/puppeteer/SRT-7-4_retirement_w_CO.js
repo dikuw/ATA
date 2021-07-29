@@ -91,37 +91,6 @@ if (itemTypesFilter.length === 0) {
       result: `SRT-7.96 -- Draft -> Retirement Initiated... `,
       image: screenshot,
     });
-    //  SRT-7.117 -- Retirement Initiated -> Retirement Canceled
-    await retirementInitiatedToRetirementCanceled(page, owner);
-    await page.waitForTimeout(2000);
-    screenshot = 'SRT-7.117_RetirementCanceled.png';
-    await page.screenshot({ path: `./screenshots/${screenshot}` });
-    results.push({
-      result: `SRT-7.117 -- Retirement Initiated -> Retirement Canceled... `,
-      image: screenshot,
-    });
-    await draftToRetirementInitiated(page, owner, true);
-    await switchUser(page, approver, module, headerCategory, category);
-    //  SRT-7.105 -- Retirement Initiated -> Retirement Rejected
-    await retirementInitiatedToRetirementRejected(page, approver);
-    await page.waitForTimeout(2000);
-    screenshot = 'SRT-7.105_RetirementRejected.png';
-    await page.screenshot({ path: `./screenshots/${screenshot}` });
-    results.push({
-      result: `SRT-7.105 -- Retirement Initiated -> Retirement Rejected... `,
-      image: screenshot,
-    });
-    await switchUser(page, owner, module, headerCategory, category);
-    //  SRT-7.7 -- Retirement Rejected -> Draft
-    await retirementRejectedToDraft(page);
-    await page.waitForTimeout(2000);
-    screenshot = 'SRT-7.7_Draft.png';
-    await page.screenshot({ path: `./screenshots/${screenshot}` });
-    results.push({
-      result: `SRT-7.7 -- Retirement Rejected -> Draft... `,
-      image: screenshot,
-    });
-    await draftToRetirementInitiated(page, owner, true);
     await switchUser(page, approver, module, headerCategory, category);
     //  SRT-7.110 -- Retirement Initiated -> Approved Retirement
     await retirementInitiatedToApprovedRetirement(page, approver);
@@ -155,9 +124,9 @@ if (itemTypesFilter.length === 0) {
     
     await logout(page);
 
-    createDoc(`SRT-7 4. Retirement with CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow: ${itemPrefix}`, results);
+    createDoc(`SRT-7 4. Retirement with CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow Retirement with CO: ${itemPrefix}`, results);
 
-    console.log(`${sort}. SRT-7 Generic Workflow: ${itemPrefix} test passed`);
+    console.log(`SRT-7 4. Retirement with CO ${sort}. ${itemPrefix} test passed`);
 
   }
 

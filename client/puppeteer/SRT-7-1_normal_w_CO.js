@@ -131,9 +131,9 @@ if (itemTypesFilter.length === 0) {
 
     await logout(page);
 
-    createDoc(`SRT-7 1. Normal Path with CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow: ${itemPrefix}`, results);
+    createDoc(`SRT-7 1. Normal Path with CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow Normal Path with CO: ${itemPrefix}`, results);
 
-    console.log(`${sort}. SRT-7 Generic Workflow: ${itemPrefix} test passed`);
+    console.log(`SRT-7 1. Normal Path with CO ${sort}. ${itemPrefix} test passed`);
 
   }
 

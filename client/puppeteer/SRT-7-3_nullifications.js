@@ -200,9 +200,9 @@ if (itemTypesFilter.length === 0) {
 
     await logout(page);
 
-    createDoc(`SRT-7 Nullifications ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow: ${itemPrefix}`, results);
+    createDoc(`SRT-7 Nullifications ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow Nullifications: ${itemPrefix}`, results);
 
-    console.log(`${sort}. SRT-7 Generic Workflow Nullifications: ${itemPrefix} test passed`);
+    console.log(`SRT-7 Nullifications ${sort}. ${itemPrefix} test passed`);
 
   }
 

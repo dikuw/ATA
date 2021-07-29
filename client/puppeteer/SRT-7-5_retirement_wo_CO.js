@@ -95,9 +95,9 @@ if (itemTypesFilter.length === 0) {
 
     await logout(page);
 
-    createDoc(`SRT-7 5. Retirement without CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow: ${itemPrefix}`, results);
+    createDoc(`SRT-7 5. Retirement without CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow Retirement without CO: ${itemPrefix}`, results);
 
-    console.log(`${sort}. SRT-7 Generic Workflow: ${itemPrefix} test passed`);
+    console.log(`SRT-7 5. Retirement without CO ${sort}. ${itemPrefix} test passed`);
 
   }
 
