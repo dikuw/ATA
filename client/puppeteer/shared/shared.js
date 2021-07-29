@@ -73,8 +73,37 @@ exports.underReviewToOwnerApprovalNoChangeOrder = async (page, owner) => {
   await page.click('[type="checkbox"]');
   await page.type('#username', owner);
   await page.type('#password', password);
-  await page.click('[type="submit"');
+  await page.click('[type="submit"]');
   await page.waitForTimeout(1000);
+};
+
+exports.underReviewToOwnerApprovalwChangeOrder = async (page, owner) => {
+  await page.waitForSelector('[data-testid="item"] #workflow-ownerApproval');
+  await page.click('[data-testid="item"] #workflow-ownerApproval');
+  await page.click('[data-testid="btn-yes"]');
+  await page.type('#reason-for-change', 'Test RoC');
+  await page.type('#need-description', 'Test DoC');
+  await page.click('#change-summary-submit');
+  await page.click('#co-yes');
+  await page.waitForSelector("#select-co-input");
+  await page.click("#select-co-input");
+  await page.click("#react-autowhatever-1 ul li:nth-last-child(1)");
+  await page.click("#select-co-button");
+  await page.click('[type="checkbox"]');
+  await page.type('#username', owner);
+  await page.type('#password', password);
+  await page.click('[type="submit"]');
+  await page.waitForTimeout(1000);
+};
+
+exports.ownerApprovalToApprovedDraft = async (page, approver) => {
+  await page.waitForSelector('[data-testid="item"] #workflow-approvedDraft');
+  await page.click('[data-testid="item"] #workflow-approvedDraft');
+  await page.click('[data-testid="btn-yes"]');
+  await page.click('[type="checkbox"]');
+  await page.type("#username", approver);
+  await page.type("#password", password);
+  await page.click('[type="submit"]');
 };
 
 exports.ownerApprovalToReleased = async (page, approver) => {
@@ -84,5 +113,29 @@ exports.ownerApprovalToReleased = async (page, approver) => {
   await page.click('[type="checkbox"]');
   await page.type("#username", approver);
   await page.type("#password", password);
-  await page.click('[type="submit"');
+  await page.click('[type="submit"]');
+};
+
+exports.draftToReadyForClosure = async (page, owner) => {
+  await page.waitForSelector('[data-testid="item"] #workflow-underReview');
+  await page.click('[data-testid="item"] #workflow-underReview');
+  await page.click('[data-testid="btn-yes"]');
+  await page.waitForTimeout(1000);
+  await page.click('#workflow-ownerApproval');
+  await page.click('[data-testid="btn-yes"]');
+  await page.waitForSelector('[type="checkbox"]');
+  await page.click('[type="checkbox"]');
+  await page.type("#username", owner);
+  await page.type("#password", password);
+  await page.click('[type="submit"]');
+};
+
+exports.readyForClosureToClosed = async (page, approver) => {
+  await page.waitForSelector('[data-testid="item"] #workflow-closed');
+  await page.click('[data-testid="item"] #workflow-closed');
+  await page.click("#co-close-yes");
+  await page.click('[type="checkbox"]');
+  await page.type("#username", approver);
+  await page.type("#password", password);
+  await page.click('[type="submit"]'); 
 };

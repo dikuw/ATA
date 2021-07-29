@@ -16,7 +16,7 @@ const { selectTableViewLastChild, draftToUnderReview } = require('./shared/share
 const { underReviewToOwnerApprovalNoChangeOrder, ownerApprovalToReleased } = require('./shared/shared');
 const { createDoc } = require('./shared/createOutput');
 
-const itemNamePrefix = 'SRT-7 Normal Path without CO';
+const itemNamePrefix = 'SRT-7 2. Normal Path without CO';
 
 const itemTypesFilter = [];
 const exclude = ["DRV", "D-UND", "D-REQ", "STD", "FRM", "RKN"];
@@ -90,13 +90,13 @@ if (itemTypesFilter.length === 0) {
     await login(page, approver);
     await openTableView(page, module, headerCategory, category);
     await selectTableViewLastChild(page);
-    //  SRT-7.2 -- Owner Approval -> Released
+    //  SRT-7.5 -- Owner Approval -> Released
     await ownerApprovalToReleased(page, approver);
-    screenshot = 'SRT-7.2_Released.png';
+    screenshot = 'SRT-7.5_Released.png';
     await page.waitForTimeout(4000);
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
-      result: `SRT-7.2 -- Owner Approval -> Released... `,
+      result: `SRT-7.5 -- Owner Approval -> Released... `,
       image: screenshot,
     });
     await logout(page);
