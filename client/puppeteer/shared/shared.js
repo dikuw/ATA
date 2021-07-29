@@ -139,3 +139,81 @@ exports.readyForClosureToClosed = async (page, approver) => {
   await page.type("#password", password);
   await page.click('[type="submit"]'); 
 };
+
+//  SRT-7.35 -- Under Review -> Draft
+exports.underReviewToDraft = async (page) => {
+  await page.waitForSelector('[data-testid="item"] #workflow-ownerApproval');
+  await page.click('[data-testid="item"] #workflow-ownerApproval');
+  await page.click('[data-testid="btn-no"]');
+};
+
+//  SRT-7.107 -- Owner Approval -> Void
+exports.voidOwnerApproval = async (page, owner) => {
+  await page.click('[data-testid="item"] .MuiPaper-root [aria-label="Ellipses Menu"]');
+  let [el] = await page.$x(`//li[contains(text(), "Void")]`);
+  await page.waitForTimeout(1000);
+  await el.click();
+  await page.type('[placeholder="Insert reason here*"]', "Test void reason");
+  await page.type("#username", owner);
+  await page.type("#password", password);
+  await page.click('[type="submit"]');
+};
+
+//  SRT-7.6 -- Owner Approval -> Rejected
+exports.ownerApprovalToRejected = async (page, approver) => {
+  await page.waitForSelector('[data-testid="item"] #workflow-approvedDraft');
+  await page.click('[data-testid="item"] #workflow-approvedDraft');
+  await page.waitForSelector('[data-testid="btn-no"]');
+  await page.click('[data-testid="btn-no"]');
+  await page.type('[placeholder="Insert reason here*"]', "Test reject reason");
+  await page.type("#username", approver);
+  await page.type("#password", password);
+  await page.click('[type="submit"]');
+};
+
+//  SRT-7.7 -- Rejected -> Draft
+exports.rejectedToDraft = async (page) => {
+  await page.waitForSelector('[data-testid="item"] #workflow-rejected');
+  await page.click('[data-testid="item"] #workflow-rejected');
+  await page.click('[type="submit"]'); 
+};
+
+//  SRT-7.93 -- Approved Draft -> Void
+exports.voidApprovedDraft = async (page, approver) => {
+  await page.click('[data-testid="item"] .MuiPaper-root [aria-label="Ellipses Menu"]');
+  let [el] = await page.$x(`//li[contains(text(), "Void")]`);
+  await page.waitForTimeout(1000);
+  await el.click();
+  await page.type('[placeholder="Insert reason here*"]', "Test void reason");
+  await page.type("#username", approver);
+  await page.type("#password", password);
+  await page.click('[type="submit"]');
+};
+
+ //  SRT-7.127 -- Under Review -> Canceled
+exports.underReviewToCanceled = async (page, owner) => {
+  await page.click('[data-testid="item"] .MuiPaper-root [aria-label="Ellipses Menu"]');
+  await page.waitForSelector('[role="menuitem"]');
+  await page.click('[role="menuitem"]');
+  await page.type('[placeholder="Insert reason here*"]', "Test cancel reason");
+  await page.type("#username", owner);
+  await page.type("#password", password);
+  await page.click('[type="submit"]');
+};
+
+//  SRT-7.113 -- Draft -> Canceled
+exports.draftToCanceled = async (page, owner) => {
+  await page.click('[data-testid="item"] .MuiPaper-root [aria-label="Ellipses Menu"]');
+  await page.waitForSelector('[role="menuitem"]');
+  await page.click('[role="menuitem"]');
+  await page.type('[placeholder="Insert reason here*"]', "Test cancel reason");
+  await page.type("#username", owner);
+  await page.type("#password", password);
+  await page.click('[type="submit"]');
+};
+
+exports.createNewVersion = async (page) => {
+  await page.click('[data-testid="item"] #create-new-rev');
+  await page.waitForSelector('[data-testid="btn-yes"]');
+  await page.click('[data-testid="btn-yes"]');
+};

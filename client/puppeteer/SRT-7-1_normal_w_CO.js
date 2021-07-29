@@ -22,7 +22,7 @@ const { createDoc } = require('./shared/createOutput');
 
 const itemNamePrefix = 'SRT-7 1. Normal Path with CO';
 
-const itemTypesFilter = ["DRV"];
+const itemTypesFilter = ["POL"];
 const exclude = ["DRV", "D-UND", "D-REQ", "MIT", "STD", "FRM", "RKN"];
 
 let filteredItemTypes = itemTypes.filter((el) => {
@@ -120,8 +120,9 @@ if (itemTypesFilter.length === 0) {
     await selectTableViewLastChild(page);
     await readyForClosureToClosed(page, changeOrderApprover);
     await openTableView(page, module, headerCategory, category);
+    await selectTableViewLastChild(page);
     screenshot = 'SRT-7.3_Released.png';
-    await page.waitForTimeout(4000);
+    await page.waitForTimeout(1000);
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.3 -- Approved Draft -> Released... `,
