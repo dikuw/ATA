@@ -11,6 +11,8 @@ const puppeteer = require('puppeteer');
 const { itemTypes } = require('./data/itemTypes');
 const { tenant } = require('./data/tenant');
 
+const changeOrderOwner = "pm_user";
+
 const { login, logout, createItem, openTableView } = require('./shared/shared');
 const { selectTableViewLastChild, draftToUnderReview } = require('./shared/shared');
 const { underReviewToOwnerApprovalwChangeOrder, ownerApprovalToApprovedDraft } = require('./shared/shared');
@@ -18,9 +20,16 @@ const { underReviewToDraft, voidOwnerApproval, ownerApprovalToRejected, rejected
 const { underReviewToCanceled, draftToCanceled, createNewVersion } = require('./shared/shared');
 const { createDoc } = require('./shared/createOutput');
 
-const itemNamePrefix = 'SRT-7 2. Normal Path without CO';
+const switchUser = async (page, user, module, headerCategory, category) => {
+  await logout(page);
+  await login(page, user);
+  await openTableView(page, module, headerCategory, category);
+  await selectTableViewLastChild(page);
+};
 
-const itemTypesFilter = ["DRV"];
+const itemNamePrefix = 'SRT-7 3. Nullifications';
+
+const itemTypesFilter = ["WI"];
 const exclude = ["DRV", "D-UND", "D-REQ", "STD", "FRM", "RKN"];
 
 let filteredItemTypes = itemTypes.filter((el) => {
@@ -56,6 +65,11 @@ if (itemTypesFilter.length === 0) {
     let results = [];
     let screenshot = "";
 
+    //  first create the change order for testing
+    await login(page, changeOrderOwner);
+    await createItem(page, "change_order", "SRT-7 3. CO");
+    await logout(page);
+
     await login(page, user);
     //  SRT-7.4 -- Does Not Exist -> Draft
     await createItem(page, dataValue, itemNamePrefix);
@@ -75,10 +89,7 @@ if (itemTypesFilter.length === 0) {
       result: `SRT-7.34 -- Draft -> Under Review... `,
       image: screenshot,
     });
-    await logout(page);
-    await login(page, owner);
-    await openTableView(page, module, headerCategory, category);
-    await selectTableViewLastChild(page);
+    await switchUser(page, owner, module, headerCategory, category);
     //  SRT-7.35 -- Under Review -> Draft
     await underReviewToDraft(page);
     await page.waitForTimeout(2000);
@@ -118,10 +129,7 @@ if (itemTypesFilter.length === 0) {
       result: `SRT-7.1 -- Under Review -> Owner Approval... `,
       image: screenshot,
     });
-    await logout(page);
-    await login(page, approver);
-    await openTableView(page, module, headerCategory, category);
-    await selectTableViewLastChild(page);
+    await switchUser(page, approver, module, headerCategory, category);
     //  SRT-7.6 -- Owner Approval -> Rejected
     await ownerApprovalToRejected(page, approver);
     await page.waitForTimeout(2000);
@@ -131,15 +139,11 @@ if (itemTypesFilter.length === 0) {
       result: `SRT-7.6 -- Owner Approval -> Rejected... `,
       image: screenshot,
     });
-    await logout(page);
-    await login(page, user);
-    await openTableView(page, module, headerCategory, category);
-    await selectTableViewLastChild(page);
+    await switchUser(page, user, module, headerCategory, category);
     //  SRT-7.7 -- Rejected -> Draft
     await rejectedToDraft(page);
     screenshot = 'SRT-7.7_Draft.png';
     await page.waitForTimeout(2000);
-    await page.waitForTimeout(4000);
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.7 -- Rejected -> Draft... `,
@@ -147,16 +151,10 @@ if (itemTypesFilter.length === 0) {
     });
     //  SRT-7.34 -- Draft -> Under Review
     await draftToUnderReview(page);
-    await logout(page);
-    await login(page, owner);
-    await openTableView(page, module, headerCategory, category);
-    await selectTableViewLastChild(page);
+    await switchUser(page, owner, module, headerCategory, category);
     //  SRT-7.1 -- Under Review -> Owner Approval
     await underReviewToOwnerApprovalwChangeOrder(page, owner);
-    await logout(page);
-    await login(page, approver);
-    await openTableView(page, module, headerCategory, category);
-    await selectTableViewLastChild(page);
+    await switchUser(page, approver, module, headerCategory, category);
     //  SRT-7.2 -- Owner Approval -> Approved Draft
     await ownerApprovalToApprovedDraft(page, approver);
     screenshot = 'SRT-7.2_Released.png';
@@ -175,10 +173,7 @@ if (itemTypesFilter.length === 0) {
       result: `SRT-7.93 -- Approved Draft -> Void... `,
       image: screenshot,
     });
-    await logout(page);
-    await login(page, owner);
-    await openTableView(page, module, headerCategory, category);
-    await selectTableViewLastChild(page);
+    await switchUser(page, owner, module, headerCategory, category);
     //  SRT-7.107 -- Owner Approval -> Void
     await voidOwnerApproval(page, owner);
     await page.waitForTimeout(2000);
@@ -196,7 +191,6 @@ if (itemTypesFilter.length === 0) {
     await page.waitForTimeout(2000);
     await draftToCanceled(page, owner);
     screenshot = 'SRT-7.113_Canceled.png';
-    await page.waitForTimeout(2000);
     await page.waitForTimeout(2000);
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
