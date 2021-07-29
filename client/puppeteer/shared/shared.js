@@ -14,6 +14,7 @@ exports.logout = async (page) => {
   await page.click('#sign-out');
 };
 
+//  SRT-7.4 -- Does Not Exist -> Draft
 exports.createItem = async (page, dataValue, itemNamePrefix) => {
   //  creates a new item and opens it in Builder view
   await page.waitForSelector('#create-item-button');
@@ -52,6 +53,7 @@ exports.selectTableViewLastChild = async (page) => {
   await page.waitForTimeout(1000);
 };
 
+//  SRT-7.34 -- Draft -> Under Review
 exports.draftToUnderReview = async (page) => {
   await page.waitForSelector('#workflow-underReview');
   await page.click('#workflow-underReview');
@@ -59,17 +61,26 @@ exports.draftToUnderReview = async (page) => {
   await page.click('[data-testid="btn-yes"]');
 };
 
-exports.underReviewToOwnerApprovalNoChangeOrder = async (page, owner) => {
+//  SRT-7.1 -- Under Review -> Owner Approval
+exports.underReviewToOwnerApproval = async (page, owner, CO) => {
   await page.waitForSelector('[data-testid="item"] #workflow-ownerApproval');
   await page.click('[data-testid="item"] #workflow-ownerApproval');
   await page.click('[data-testid="btn-yes"]');
   await page.type('#reason-for-change', 'Test RoC');
   await page.type('#need-description', 'Test DoC');
   await page.click('#change-summary-submit');
-  await page.click('#transition-modal [type="button"]');
-  await page.waitForSelector('#change-justify');
-  await page.type('#change-justify', 'test justification');
-  await page.click('#justify-next');
+  if (CO) {
+    await page.click('#co-yes');
+    await page.waitForSelector("#select-co-input");
+    await page.click("#select-co-input");
+    await page.click("#react-autowhatever-1 ul li:nth-last-child(1)");
+    await page.click("#select-co-button");
+  } else {
+    await page.click('#transition-modal [type="button"]');
+    await page.waitForSelector('#change-justify');
+    await page.type('#change-justify', 'test justification');
+    await page.click('#justify-next');
+  }
   await page.click('[type="checkbox"]');
   await page.type('#username', owner);
   await page.type('#password', password);
@@ -77,25 +88,7 @@ exports.underReviewToOwnerApprovalNoChangeOrder = async (page, owner) => {
   await page.waitForTimeout(1000);
 };
 
-exports.underReviewToOwnerApprovalwChangeOrder = async (page, owner) => {
-  await page.waitForSelector('[data-testid="item"] #workflow-ownerApproval');
-  await page.click('[data-testid="item"] #workflow-ownerApproval');
-  await page.click('[data-testid="btn-yes"]');
-  await page.type('#reason-for-change', 'Test RoC');
-  await page.type('#need-description', 'Test DoC');
-  await page.click('#change-summary-submit');
-  await page.click('#co-yes');
-  await page.waitForSelector("#select-co-input");
-  await page.click("#select-co-input");
-  await page.click("#react-autowhatever-1 ul li:nth-last-child(1)");
-  await page.click("#select-co-button");
-  await page.click('[type="checkbox"]');
-  await page.type('#username', owner);
-  await page.type('#password', password);
-  await page.click('[type="submit"]');
-  await page.waitForTimeout(1000);
-};
-
+//  SRT-7.2 -- Owner Approval -> Approved Draft
 exports.ownerApprovalToApprovedDraft = async (page, approver) => {
   await page.waitForSelector('[data-testid="item"] #workflow-approvedDraft');
   await page.click('[data-testid="item"] #workflow-approvedDraft');
@@ -106,6 +99,7 @@ exports.ownerApprovalToApprovedDraft = async (page, approver) => {
   await page.click('[type="submit"]');
 };
 
+// SRT-7.3 -- Approved Draft -> Released
 exports.ownerApprovalToReleased = async (page, approver) => {
   await page.waitForSelector('[data-testid="item"] #workflow-released');
   await page.click('[data-testid="item"] #workflow-released');
@@ -242,44 +236,6 @@ exports.draftToRetirementInitiated = async (page, owner, CO) => {
   await page.type('#change-justify', 'Test retirement reason');
   await page.type('#username', owner);
   await page.type('#password', password);
-  await page.click('[type="submit"]');
-}
-
-exports.draftToRetirementInitiatedwCO = async (page, owner) => {
-  await page.click('[data-testid="item"] .MuiPaper-root [aria-label="Ellipses Menu"]');
-  let [el] = await page.$x(`//li[contains(text(), "Retire")]`);
-  await page.waitForTimeout(1000);
-  await el.click();
-  await page.click('[data-testid="btn-yes"]');
-  await page.type('#reason-for-change', 'Test RfC');
-  await page.type('#need-description', 'Test DoC');
-  await page.click('#change-summary-submit');
-  await page.click('#co-yes');
-  await page.waitForSelector('#select-co-input');
-  await page.click('#select-co-input');
-  await page.click('#react-autowhatever-1 ul li:nth-last-child(1)');
-  await page.click('#select-co-button');
-  await page.type('#change-justify', 'Test Change Justification');
-  await page.type('#username', owner);
-  await page.type('#password', password);
-  await page.click('[type="submit"]');
-}
-
-exports.draftToRetirementInitiatedwoCO = async (page, owner) => {
-  await page.click('[data-testid="item"] .MuiPaper-root [aria-label="Ellipses Menu"]');
-  let [el] = await page.$x(`//li[contains(text(), "Retire")]`);
-  await page.waitForTimeout(1000);
-  await el.click();
-  await page.click('[data-testid="btn-yes"]');
-  await page.type('#reason-for-change', 'Test RfC');
-  await page.type('#need-description', 'Test DoC');
-  await page.click('#change-summary-submit');
-  await page.click('#co-no');
-  await page.type("#change-justify", "Test retirement no CO justifcation");
-  await page.click("#justify-next");
-  await page.type("#change-justify", "Test retirement reason");
-  await page.type("#username", owner);
-  await page.type("#password", password);
   await page.click('[type="submit"]');
 };
 

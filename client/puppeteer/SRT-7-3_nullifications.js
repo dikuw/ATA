@@ -15,7 +15,7 @@ const changeOrderOwner = "pm_user";
 
 const { login, logout, createItem, openTableView } = require('./shared/shared');
 const { selectTableViewLastChild, draftToUnderReview } = require('./shared/shared');
-const { underReviewToOwnerApprovalwChangeOrder, ownerApprovalToApprovedDraft } = require('./shared/shared');
+const { underReviewToOwnerApproval, ownerApprovalToApprovedDraft } = require('./shared/shared');
 const { underReviewToDraft, voidOwnerApproval, ownerApprovalToRejected, rejectedToDraft, voidApprovedDraft  } = require('./shared/shared');
 const { underReviewToCanceled, draftToCanceled, createNewVersion } = require('./shared/shared');
 const { createDoc } = require('./shared/createOutput');
@@ -103,7 +103,7 @@ if (itemTypesFilter.length === 0) {
     await draftToUnderReview(page);
     await page.waitForTimeout(2000);
     //  SRT-7.1 -- Under Review -> Owner Approval
-    await underReviewToOwnerApprovalwChangeOrder(page, owner);
+    await underReviewToOwnerApproval(page, owner, true);
     await page.waitForTimeout(2000);
     screenshot = 'SRT-7.1_OwnerApproval_1.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
@@ -121,7 +121,7 @@ if (itemTypesFilter.length === 0) {
       image: screenshot,
     });
     //  SRT-7.1 -- Under Review -> Owner Approval
-    await underReviewToOwnerApprovalwChangeOrder(page, owner);
+    await underReviewToOwnerApproval(page, owner, true);
     await page.waitForTimeout(2000);
     screenshot = 'SRT-7.1_OwnerApproval_2.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
@@ -153,7 +153,7 @@ if (itemTypesFilter.length === 0) {
     await draftToUnderReview(page);
     await switchUser(page, owner, module, headerCategory, category);
     //  SRT-7.1 -- Under Review -> Owner Approval
-    await underReviewToOwnerApprovalwChangeOrder(page, owner);
+    await underReviewToOwnerApproval(page, owner, true);
     await switchUser(page, approver, module, headerCategory, category);
     //  SRT-7.2 -- Owner Approval -> Approved Draft
     await ownerApprovalToApprovedDraft(page, approver);

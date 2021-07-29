@@ -16,7 +16,7 @@ const changeOrderApprover = "qa_lead_user";
 
 const { login, logout, createItem, openTableView } = require('./shared/shared');
 const { selectTableViewLastChild, draftToUnderReview } = require('./shared/shared');
-const { underReviewToOwnerApprovalwChangeOrder, ownerApprovalToApprovedDraft } = require('./shared/shared');
+const { underReviewToOwnerApproval, ownerApprovalToApprovedDraft } = require('./shared/shared');
 const { draftToReadyForClosure, readyForClosureToClosed } = require('./shared/shared');
 const { createDoc } = require('./shared/createOutput');
 
@@ -87,7 +87,7 @@ if (itemTypesFilter.length === 0) {
     await openTableView(page, module, headerCategory, category);
     await selectTableViewLastChild(page);
     //  SRT-7.1 -- Under Review -> Owner Approval
-    await underReviewToOwnerApprovalwChangeOrder(page, owner);
+    await underReviewToOwnerApproval(page, owner, true);
     await page.waitForTimeout(2000);
     screenshot = 'SRT-7.1_OwnerApproval.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });

@@ -13,12 +13,12 @@ const { tenant } = require('./data/tenant');
 
 const { login, logout, createItem, openTableView } = require('./shared/shared');
 const { selectTableViewLastChild, draftToUnderReview } = require('./shared/shared');
-const { underReviewToOwnerApprovalNoChangeOrder, ownerApprovalToReleased } = require('./shared/shared');
+const { underReviewToOwnerApproval, ownerApprovalToReleased } = require('./shared/shared');
 const { createDoc } = require('./shared/createOutput');
 
 const itemNamePrefix = 'SRT-7 2. Normal Path without CO';
 
-const itemTypesFilter = [];
+const itemTypesFilter = ["DRV"];
 const exclude = ["DRV", "D-UND", "D-REQ", "STD", "FRM", "RKN"];
 
 let filteredItemTypes = itemTypes.filter((el) => {
@@ -78,7 +78,7 @@ if (itemTypesFilter.length === 0) {
     await openTableView(page, module, headerCategory, category);
     await selectTableViewLastChild(page);
     //  SRT-7.1 -- Under Review -> Owner Approval
-    await underReviewToOwnerApprovalNoChangeOrder(page, owner);
+    await underReviewToOwnerApproval(page, owner);
     await page.waitForTimeout(2000);
     screenshot = 'SRT-7.1_OwnerApproval.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
