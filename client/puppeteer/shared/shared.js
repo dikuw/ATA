@@ -219,6 +219,32 @@ exports.createNewVersion = async (page) => {
 };
 
 //  SRT-7.96 -- Draft -> Retirement Initiated
+exports.draftToRetirementInitiated = async (page, owner, CO) => {
+  await page.click('[data-testid="item"] .MuiPaper-root [aria-label="Ellipses Menu"]');
+  let [el] = await page.$x(`//li[contains(text(), "Retire")]`);
+  await page.waitForTimeout(1000);
+  await el.click();
+  await page.click('[data-testid="btn-yes"]');
+  await page.type('#reason-for-change', 'Test RfC');
+  await page.type('#need-description', 'Test DoC');
+  await page.click('#change-summary-submit');
+  if (CO) {
+    await page.click('#co-yes');
+    await page.waitForSelector('#select-co-input');
+    await page.click('#select-co-input');
+    await page.click('#react-autowhatever-1 ul li:nth-last-child(1)');
+    await page.click('#select-co-button');
+  } else {
+    await page.click('#co-no');
+    await page.type("#change-justify", "Test retirement no CO justifcation");
+    await page.click("#justify-next");
+  }
+  await page.type('#change-justify', 'Test retirement reason');
+  await page.type('#username', owner);
+  await page.type('#password', password);
+  await page.click('[type="submit"]');
+}
+
 exports.draftToRetirementInitiatedwCO = async (page, owner) => {
   await page.click('[data-testid="item"] .MuiPaper-root [aria-label="Ellipses Menu"]');
   let [el] = await page.$x(`//li[contains(text(), "Retire")]`);

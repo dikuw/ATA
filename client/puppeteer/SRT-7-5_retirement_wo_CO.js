@@ -13,7 +13,7 @@ const { tenant } = require('./data/tenant');
 
 const { login, logout, createItem, openTableView } = require('./shared/shared');
 const { selectTableViewLastChild } = require('./shared/shared');
-const { draftToRetirementInitiatedwoCO } = require('./shared/shared');
+const { draftToRetirementInitiated } = require('./shared/shared');
 const { retirementInitiatedToRetired } = require('./shared/shared');
 const { createDoc } = require('./shared/createOutput');
 
@@ -74,7 +74,7 @@ if (itemTypesFilter.length === 0) {
     });
     //  SRT-7.96 -- Draft -> Retirement Initiated
     await switchUser(page, owner, module, headerCategory, category);
-    await draftToRetirementInitiatedwoCO(page, owner);
+    await draftToRetirementInitiated(page, owner);
     await page.waitForTimeout(2000);
     screenshot = 'SRT-7.96_RetirementInitiated.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });

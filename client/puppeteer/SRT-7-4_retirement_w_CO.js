@@ -17,7 +17,7 @@ const changeOrderApprover = "qa_lead_user";
 const { login, logout, createItem, openTableView } = require('./shared/shared');
 const { selectTableViewLastChild } = require('./shared/shared');
 const { draftToReadyForClosure, readyForClosureToClosed } = require('./shared/shared');
-const { draftToRetirementInitiatedwCO, retirementInitiatedToRetirementCanceled, retirementInitiatedToRetirementRejected } = require('./shared/shared');
+const { draftToRetirementInitiated, retirementInitiatedToRetirementCanceled, retirementInitiatedToRetirementRejected } = require('./shared/shared');
 const { retirementRejectedToDraft, retirementInitiatedToApprovedRetirement } = require('./shared/shared');
 const { createDoc } = require('./shared/createOutput');
 
@@ -83,7 +83,7 @@ if (itemTypesFilter.length === 0) {
     });
     //  SRT-7.96 -- Draft -> Retirement Initiated
     await switchUser(page, owner, module, headerCategory, category);
-    await draftToRetirementInitiatedwCO(page, owner);
+    await draftToRetirementInitiated(page, owner, true);
     await page.waitForTimeout(2000);
     screenshot = 'SRT-7.96_RetirementInitiated.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
@@ -100,7 +100,7 @@ if (itemTypesFilter.length === 0) {
       result: `SRT-7.117 -- Retirement Initiated -> Retirement Canceled... `,
       image: screenshot,
     });
-    await draftToRetirementInitiatedwCO(page, owner);
+    await draftToRetirementInitiated(page, owner, true);
     await switchUser(page, approver, module, headerCategory, category);
     //  SRT-7.105 -- Retirement Initiated -> Retirement Rejected
     await retirementInitiatedToRetirementRejected(page, approver);
@@ -121,7 +121,7 @@ if (itemTypesFilter.length === 0) {
       result: `SRT-7.7 -- Retirement Rejected -> Draft... `,
       image: screenshot,
     });
-    await draftToRetirementInitiatedwCO(page, owner);
+    await draftToRetirementInitiated(page, owner, true);
     await switchUser(page, approver, module, headerCategory, category);
     //  SRT-7.110 -- Retirement Initiated -> Approved Retirement
     await retirementInitiatedToApprovedRetirement(page, approver);
