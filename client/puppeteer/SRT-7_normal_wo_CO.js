@@ -86,7 +86,6 @@ if (itemTypesFilter.length === 0) {
       result: `SRT-7.1 -- Under Review -> Owner Approval... `,
       image: screenshot,
     });
-    //  //  logout
     await logout(page);
     await login(page, approver);
     await openTableView(page, module, headerCategory, category);
