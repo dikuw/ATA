@@ -1,6 +1,6 @@
 //  ** SRT-7 Generic Workflow **  //
 //  This script tests the Generic workflow per SRT-7
-//  1. Normal path with a CO
+//  4. Retirement with CO
 //
 //  Any item type using the Generic workflow that is not a singleton can be tested
 //  Item types should be set up in the itemTypes arrary
@@ -15,12 +15,20 @@ const changeOrderOwner = "pm_user";
 const changeOrderApprover = "qa_lead_user";
 
 const { login, logout, createItem, openTableView } = require('./shared/shared');
-const { selectTableViewLastChild, draftToUnderReview } = require('./shared/shared');
-const { underReviewToOwnerApprovalwChangeOrder, ownerApprovalToApprovedDraft } = require('./shared/shared');
+const { selectTableViewLastChild } = require('./shared/shared');
 const { draftToReadyForClosure, readyForClosureToClosed } = require('./shared/shared');
+const { draftToRetirementInitiatedwCO, retirementInitiatedToRetirementCanceled, retirementInitiatedToRetirementRejected } = require('./shared/shared');
+const { retirementRejectedToDraft, retirementInitiatedToApprovedRetirement } = require('./shared/shared');
 const { createDoc } = require('./shared/createOutput');
 
-const itemNamePrefix = 'SRT-7 1. Normal Path with CO';
+const switchUser = async (page, user, module, headerCategory, category) => {
+  await logout(page);
+  await login(page, user);
+  await openTableView(page, module, headerCategory, category);
+  await selectTableViewLastChild(page);
+};
+
+const itemNamePrefix = 'SRT-7 4. Retirement with CO';
 
 const itemTypesFilter = ["POL"];
 const exclude = ["DRV", "D-UND", "D-REQ", "MIT", "STD", "FRM", "RKN"];
@@ -60,7 +68,7 @@ if (itemTypesFilter.length === 0) {
 
     //  first create the change order for testing
     await login(page, changeOrderOwner);
-    await createItem(page, "change_order", "SRT-7 1. CO");
+    await createItem(page, "change_order", "SRT-7 4. CO");
     await logout(page);
 
     await login(page, user);
@@ -73,42 +81,58 @@ if (itemTypesFilter.length === 0) {
       result: `SRT-7.4 -- Does Not Exist -> Draft... `,
       image: screenshot,
     });
-    //  SRT-7.34 -- Draft -> Under Review
-    await draftToUnderReview(page);
+    //  SRT-7.96 -- Draft -> Retirement Initiated
+    await switchUser(page, owner, module, headerCategory, category);
+    await draftToRetirementInitiatedwCO(page, owner);
     await page.waitForTimeout(2000);
-    screenshot = 'SRT-7.34_UnderReview.png';
+    screenshot = 'SRT-7.96_RetirementInitiated.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
-      result: `SRT-7.34 -- Draft -> Under Review... `,
+      result: `SRT-7.96 -- Draft -> Retirement Initiated... `,
       image: screenshot,
     });
-    await logout(page);
-    await login(page, owner);
-    await openTableView(page, module, headerCategory, category);
-    await selectTableViewLastChild(page);
-    //  SRT-7.1 -- Under Review -> Owner Approval
-    await underReviewToOwnerApprovalwChangeOrder(page, owner);
+    //  SRT-7.117 -- Retirement Initiated -> Retirement Canceled
+    await retirementInitiatedToRetirementCanceled(page, owner);
     await page.waitForTimeout(2000);
-    screenshot = 'SRT-7.1_OwnerApproval.png';
+    screenshot = 'SRT-7.117_RetirementCanceled.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
-      result: `SRT-7.1 -- Under Review -> Owner Approval... `,
+      result: `SRT-7.117 -- Retirement Initiated -> Retirement Canceled... `,
       image: screenshot,
     });
-    await logout(page);
-    await login(page, approver);
-    await openTableView(page, module, headerCategory, category);
-    await selectTableViewLastChild(page);
-    //  SRT-7.2 -- Owner Approval -> Approved Draft
-    await ownerApprovalToApprovedDraft(page, approver);
-    screenshot = 'SRT-7.2_Released.png';
-    await page.waitForTimeout(4000);
+    await draftToRetirementInitiatedwCO(page, owner);
+    await switchUser(page, approver, module, headerCategory, category);
+    //  SRT-7.105 -- Retirement Initiated -> Retirement Rejected
+    await retirementInitiatedToRetirementRejected(page, approver);
+    await page.waitForTimeout(2000);
+    screenshot = 'SRT-7.105_RetirementRejected.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
-      result: `SRT-7.2 -- Owner Approval -> Released... `,
+      result: `SRT-7.105 -- Retirement Initiated -> Retirement Rejected... `,
       image: screenshot,
     });
-    // SRT-7.3 -- Approved Draft -> Released
+    await switchUser(page, owner, module, headerCategory, category);
+    //  SRT-7.7 -- Retirement Rejected -> Draft
+    await retirementRejectedToDraft(page);
+    await page.waitForTimeout(2000);
+    screenshot = 'SRT-7.7_Draft.png';
+    await page.screenshot({ path: `./screenshots/${screenshot}` });
+    results.push({
+      result: `SRT-7.7 -- Retirement Rejected -> Draft... `,
+      image: screenshot,
+    });
+    await draftToRetirementInitiatedwCO(page, owner);
+    await switchUser(page, approver, module, headerCategory, category);
+    //  SRT-7.110 -- Retirement Initiated -> Approved Retirement
+    await retirementInitiatedToApprovedRetirement(page, approver);
+    await page.waitForTimeout(2000);
+    screenshot = 'SRT-7.110_ApprovedRetirement.png';
+    await page.screenshot({ path: `./screenshots/${screenshot}` });
+    results.push({
+      result: `SRT-7.110 -- Retirement Initiated -> Approved Retirement... `,
+      image: screenshot,
+    });
+    //  SRT-7.106 -- Approved Retirement -> Retired
     await logout(page);
     await login(page, changeOrderOwner);
     await openTableView(page, "Quality Management System", "", "category-change-order");
@@ -121,17 +145,17 @@ if (itemTypesFilter.length === 0) {
     await readyForClosureToClosed(page, changeOrderApprover);
     await openTableView(page, module, headerCategory, category);
     await selectTableViewLastChild(page);
-    screenshot = 'SRT-7.3_Released.png';
     await page.waitForTimeout(1000);
+    screenshot = 'SRT-7.106_Retired.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
-      result: `SRT-7.3 -- Approved Draft -> Released... `,
+      result: `SRT-7.106 -- Approved Retirement -> Retired... `,
       image: screenshot,
     });
-
+    
     await logout(page);
 
-    createDoc(`SRT-7 1. Normal Path with CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow: ${itemPrefix}`, results);
+    createDoc(`SRT-7 4. Retirement with CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow: ${itemPrefix}`, results);
 
     console.log(`${sort}. SRT-7 Generic Workflow: ${itemPrefix} test passed`);
 

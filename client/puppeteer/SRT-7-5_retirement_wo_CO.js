@@ -1,6 +1,6 @@
 //  ** SRT-7 Generic Workflow **  //
 //  This script tests the Generic workflow per SRT-7
-//  2. Normal path without a CO
+//  5. Retirement without CO
 //
 //  Any item type using the Generic workflow that is not a singleton can be tested
 //  Item types should be set up in the itemTypes arrary
@@ -12,14 +12,22 @@ const { itemTypes } = require('./data/itemTypes');
 const { tenant } = require('./data/tenant');
 
 const { login, logout, createItem, openTableView } = require('./shared/shared');
-const { selectTableViewLastChild, draftToUnderReview } = require('./shared/shared');
-const { underReviewToOwnerApprovalNoChangeOrder, ownerApprovalToReleased } = require('./shared/shared');
+const { selectTableViewLastChild } = require('./shared/shared');
+const { draftToRetirementInitiatedwoCO } = require('./shared/shared');
+const { retirementInitiatedToRetired } = require('./shared/shared');
 const { createDoc } = require('./shared/createOutput');
 
-const itemNamePrefix = 'SRT-7 2. Normal Path without CO';
+const switchUser = async (page, user, module, headerCategory, category) => {
+  await logout(page);
+  await login(page, user);
+  await openTableView(page, module, headerCategory, category);
+  await selectTableViewLastChild(page);
+};
 
-const itemTypesFilter = [];
-const exclude = ["DRV", "D-UND", "D-REQ", "STD", "FRM", "RKN"];
+const itemNamePrefix = 'SRT-7 5. Retirement without CO';
+
+const itemTypesFilter = ["DRV"];
+const exclude = ["DRV", "D-UND", "D-REQ", "MIT", "STD", "FRM", "RKN"];
 
 let filteredItemTypes = itemTypes.filter((el) => {
   return itemTypesFilter.some((f) => {
@@ -64,44 +72,30 @@ if (itemTypesFilter.length === 0) {
       result: `SRT-7.4 -- Does Not Exist -> Draft... `,
       image: screenshot,
     });
-    //  SRT-7.34 -- Draft -> Under Review
-    await draftToUnderReview(page);
+    //  SRT-7.96 -- Draft -> Retirement Initiated
+    await switchUser(page, owner, module, headerCategory, category);
+    await draftToRetirementInitiatedwoCO(page, owner);
     await page.waitForTimeout(2000);
-    screenshot = 'SRT-7.34_UnderReview.png';
+    screenshot = 'SRT-7.96_RetirementInitiated.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
-      result: `SRT-7.34 -- Draft -> Under Review... `,
+      result: `SRT-7.96 -- Draft -> Retirement Initiated... `,
       image: screenshot,
     });
-    await logout(page);
-    await login(page, owner);
-    await openTableView(page, module, headerCategory, category);
-    await selectTableViewLastChild(page);
-    //  SRT-7.1 -- Under Review -> Owner Approval
-    await underReviewToOwnerApprovalNoChangeOrder(page, owner);
-    await page.waitForTimeout(2000);
-    screenshot = 'SRT-7.1_OwnerApproval.png';
-    await page.screenshot({ path: `./screenshots/${screenshot}` });
-    results.push({
-      result: `SRT-7.1 -- Under Review -> Owner Approval... `,
-      image: screenshot,
-    });
-    await logout(page);
-    await login(page, approver);
-    await openTableView(page, module, headerCategory, category);
-    await selectTableViewLastChild(page);
-    //  SRT-7.5 -- Owner Approval -> Released
-    await ownerApprovalToReleased(page, approver);
-    screenshot = 'SRT-7.5_Released.png';
+    await switchUser(page, approver, module, headerCategory, category);
+    //  SRT-7.98 -- Retirement Initiated -> Retired
+    await retirementInitiatedToRetired(page, approver);
     await page.waitForTimeout(4000);
+    screenshot = 'SRT-7.98_Retired.png';
     await page.screenshot({ path: `./screenshots/${screenshot}` });
     results.push({
-      result: `SRT-7.5 -- Owner Approval -> Released... `,
+      result: `SRT-7.98 -- Retirement Initiated -> Retired... `,
       image: screenshot,
     });
+
     await logout(page);
 
-    createDoc(`SRT-7 Normal Path without CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow: ${itemPrefix}`, results);
+    createDoc(`SRT-7 5. Retirement without CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow: ${itemPrefix}`, results);
 
     console.log(`${sort}. SRT-7 Generic Workflow: ${itemPrefix} test passed`);
 

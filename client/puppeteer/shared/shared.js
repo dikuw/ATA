@@ -217,3 +217,94 @@ exports.createNewVersion = async (page) => {
   await page.waitForSelector('[data-testid="btn-yes"]');
   await page.click('[data-testid="btn-yes"]');
 };
+
+//  SRT-7.96 -- Draft -> Retirement Initiated
+exports.draftToRetirementInitiatedwCO = async (page, owner) => {
+  await page.click('[data-testid="item"] .MuiPaper-root [aria-label="Ellipses Menu"]');
+  let [el] = await page.$x(`//li[contains(text(), "Retire")]`);
+  await page.waitForTimeout(1000);
+  await el.click();
+  await page.click('[data-testid="btn-yes"]');
+  await page.type('#reason-for-change', 'Test RfC');
+  await page.type('#need-description', 'Test DoC');
+  await page.click('#change-summary-submit');
+  await page.click('#co-yes');
+  await page.waitForSelector('#select-co-input');
+  await page.click('#select-co-input');
+  await page.click('#react-autowhatever-1 ul li:nth-last-child(1)');
+  await page.click('#select-co-button');
+  await page.type('#change-justify', 'Test Change Justification');
+  await page.type('#username', owner);
+  await page.type('#password', password);
+  await page.click('[type="submit"]');
+}
+
+exports.draftToRetirementInitiatedwoCO = async (page, owner) => {
+  await page.click('[data-testid="item"] .MuiPaper-root [aria-label="Ellipses Menu"]');
+  let [el] = await page.$x(`//li[contains(text(), "Retire")]`);
+  await page.waitForTimeout(1000);
+  await el.click();
+  await page.click('[data-testid="btn-yes"]');
+  await page.type('#reason-for-change', 'Test RfC');
+  await page.type('#need-description', 'Test DoC');
+  await page.click('#change-summary-submit');
+  await page.click('#co-no');
+  await page.type("#change-justify", "Test retirement no CO justifcation");
+  await page.click("#justify-next");
+  await page.type("#change-justify", "Test retirement reason");
+  await page.type("#username", owner);
+  await page.type("#password", password);
+  await page.click('[type="submit"]');
+};
+
+//  SRT-7.117 -- Retirement Initiated -> Retirement Canceled
+exports.retirementInitiatedToRetirementCanceled = async (page, owner) => {
+  await page.click('[data-testid="item"] .MuiPaper-root [aria-label="Ellipses Menu"]');
+  await page.click('[role="menu"]');
+  await page.type("#username", owner);
+  await page.type("#password", password);
+  await page.click('[type="submit"]');
+};
+
+//  SRT-7.105 -- Retirement Initiated -> Retirement Rejected
+exports.retirementInitiatedToRetirementRejected = async (page, approver) => {
+  await page.waitForSelector('[data-testid="item"] #workflow-approvedDraft');
+  await page.click('[data-testid="item"] #workflow-approvedDraft');
+  await page.waitForSelector('[data-testid="btn-no"]');
+  await page.click('[data-testid="btn-no"]');
+  await page.type('[placeholder="Insert reason here*"]', "Test retirement rejection reason");
+  await page.type('#username', approver);
+  await page.type('#password', password);
+  await page.click('[type="submit"]');
+};
+
+//  SRT-7.7 -- Retirement Rejected -> Draft 
+exports.retirementRejectedToDraft = async (page) => {
+  await page.waitForSelector('[data-testid="item"] #workflow-rejected');
+  await page.click('[data-testid="item"] #workflow-rejected');
+  await page.click('[type="submit"]');
+};
+
+ //  SRT-7.110 -- Retirement Initiated -> Approved Retirement
+exports.retirementInitiatedToApprovedRetirement = async (page, approver) => {
+  await page.waitForSelector('[data-testid="item"] #workflow-approvedDraft');
+  await page.click('[data-testid="item"] #workflow-approvedDraft');
+  await page.waitForSelector('[data-testid="btn-yes"]');
+  await page.click('[data-testid="btn-yes"]');
+  await page.click('[value=""]');
+  await page.type("#username", approver);
+  await page.type("#password", password);
+  await page.click('[type="submit"]');
+};
+
+//  SRT-7.98 -- Retirement Initiated -> Retired
+exports.retirementInitiatedToRetired = async (page, approver) => {
+  await page.waitForSelector('[data-testid="item"] #workflow-obsolete');
+  await page.click('[data-testid="item"] #workflow-obsolete');
+  await page.waitForSelector('[data-testid="btn-yes"]');
+  await page.click('[data-testid="btn-yes"]');
+  await page.click('[value=""]');
+  await page.type("#username", approver);
+  await page.type("#password", password);
+  await page.click('[type="submit"]');
+};
