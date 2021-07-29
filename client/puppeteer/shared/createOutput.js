@@ -30,6 +30,7 @@ exports.createDoc = (fileName, testTitle, results) => {
             italics: true,
           }),
         ],
+        keepNext: true,
       }),
     )
     if (image) {
