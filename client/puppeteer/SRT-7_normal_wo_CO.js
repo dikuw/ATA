@@ -19,7 +19,7 @@ const { createDoc } = require('./shared/createOutput');
 const itemNamePrefix = 'SRT-7 Normal Path without CO';
 
 const itemTypesFilter = [];
-const exclude = ["DRV", "D-UND", "D-REQ", "FRM", "RKN"];
+const exclude = ["DRV", "D-UND", "D-REQ", "STD", "FRM", "RKN"];
 
 let filteredItemTypes = itemTypes.filter((el) => {
   return itemTypesFilter.some((f) => {
@@ -27,14 +27,13 @@ let filteredItemTypes = itemTypes.filter((el) => {
   });
 });
 
-if (Object.keys(filteredItemTypes).length === 0) {
-  filteredItemTypes = itemTypes;
-  let excludedItemTypes = itemTypes.filter((el) => {
-    return exclude.some((f) => {
-      return f !== el.itemPrefix;
+if (itemTypesFilter.length === 0) {
+  //  then include all item types except the ones in the 'exclude' array
+  filteredItemTypes = itemTypes.filter((el) => {
+    return !exclude.some((f) => {
+      return f === el.itemPrefix;
     });
   });
-  filteredItemTypes = excludedItemTypes;
 }
 
 (async () => {
