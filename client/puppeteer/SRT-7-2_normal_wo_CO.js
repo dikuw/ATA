@@ -18,7 +18,7 @@ const { createDoc } = require('./shared/createOutput');
 
 const itemNamePrefix = 'SRT-7 2. Normal Path without CO';
 
-const itemTypesFilter = ["DRV"];
+const itemTypesFilter = ["V-REQ"];
 const exclude = ["DRV", "D-UND", "D-REQ", "STD", "FRM", "RKN"];
 
 let filteredItemTypes = itemTypes.filter((el) => {
