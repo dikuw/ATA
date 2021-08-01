@@ -18,8 +18,10 @@ const { createDoc } = require('./shared/createOutput');
 
 const itemNamePrefix = 'SRT-7 2. Normal Path without CO';
 
-const itemTypesFilter = ["V-REQ"];
-const exclude = ["DRV", "D-UND", "D-REQ", "STD", "FRM", "RKN"];
+const itemTypesFilter = [];
+const exclude = ["DRV", "D-UND", "D-REQ", "STD", "ARC", "D-RAD", "D-TM", "MIT", "DUD", "IFU", "TPN", "DO", "VVP", "D-VVPRO", "VAL", "IQI", "IPI", "FDI", "SOP", "FRM", "RKN"];
+exclude.push("MSD", "POL", "CQP", "QPL", "WI", "TMP", "D-CAPA", "V-URS", "V-REQ", "V-PLN", "V-DRS", "V-VPRO", "V-RPT", "V-TM", "N-URS", "URS");
+//  currently broken on Dry Run: "MIT", "TPN", "VAL", "SOP", "FRM", "RKN", "IQI", "IPI", "FDI", "V-DRS",
 
 let filteredItemTypes = itemTypes.filter((el) => {
   return itemTypesFilter.some((f) => {
@@ -50,6 +52,8 @@ if (itemTypesFilter.length === 0) {
 
   for (const itemType of filteredItemTypes) {
     const { itemPrefix, dataValue, user, owner, approver, module, headerCategory, category, sort } = itemType;
+
+    console.log(`Testing ${sort}. ${itemPrefix}...`);
 
     let results = [];
     let screenshot = "";
