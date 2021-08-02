@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from 'react';
 
-import '../api/index';
+import apis from '../api/index';
 import '../styles/App.css';
+
+import ItemTypePicker from './ItemTypePicker';
 
 function App() {
 
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-  });
+  const [itemTypes, setitemTypes] = useState([]);
+
+  const getItemTypes = async () => {
+    await apis.getItemTypes().then(res => {
+      setitemTypes(res.data.itemTypes);
+    })
+  }
 
   useEffect(() => {
-    const itemTypes = await getItemTypes();
+    async function initialize() {
+      await getItemTypes();
+    }
+    initialize();
   });
 
   return (
@@ -21,6 +29,7 @@ function App() {
           Automated Testing Tool
         </p>
       </header>
+      <ItemTypePicker itemTypes={itemTypes} />
     </div>
   );
 }

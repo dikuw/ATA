@@ -1,14 +1,15 @@
 import axios from 'axios';
 
 const api = axios.create({
-  withCredentials: true,
-  baseURL: process.env.REACT_APP_BASEURL
+  withCredentials: false,
+  baseURL: "http://localhost:8000/api"
 });
 
-export const getItemTypes = () => api.get(`/getItemTypes`);
+export const getItemTypes = () => api.get('/getItemTypes');
 export const testRunner = payload => api.post('/testRunner', payload);
 
 const apis = {
+  getItemTypes,
   testRunner,
 };
 
