@@ -1,9 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
 import apis from '../api/index';
 import '../styles/App.css';
 
 import ItemTypePicker from './ItemTypePicker';
+import TestPicker from './TestPicker';
+
+const Container = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  padding: 1vw;
+`;
+
+const ChildContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const TitleDiv = styled.div`
+  font-size: 1.2em;
+  font-weight: bold;
+`;
+
+
 
 function App() {
 
@@ -31,7 +51,19 @@ function App() {
           Automated Testing Tool
         </p>
       </header>
-      <ItemTypePicker itemTypes={itemTypes} />
+      <Container>
+        <ChildContainer>
+          <TitleDiv>Item Types</TitleDiv>
+          <ItemTypePicker itemTypes={itemTypes} />
+        </ChildContainer>
+        <ChildContainer>
+          <TitleDiv>Test Functions</TitleDiv>
+          <TestPicker itemTypes={itemTypes} />
+        </ChildContainer>
+        <ChildContainer>
+          <TitleDiv>Outputs</TitleDiv>
+        </ChildContainer>
+      </Container>
     </div>
   );
 }
