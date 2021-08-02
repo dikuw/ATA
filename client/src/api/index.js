@@ -6,10 +6,12 @@ const api = axios.create({
 });
 
 export const getItemTypes = () => api.get('/getItemTypes');
+export const getTestFunctions = () => api.get('/getTestFunctions');
 export const testRunner = payload => api.post('/testRunner', payload);
 
 const apis = {
   getItemTypes,
+  getTestFunctions,
   testRunner,
 };
 

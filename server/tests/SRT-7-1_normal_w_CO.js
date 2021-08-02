@@ -50,7 +50,7 @@ exports.SRT71 = async (prefix) => {
   await createItem(page, dataValue, itemNamePrefix);
   await page.waitForTimeout(2000);
   screenshot = 'SRT-7.4_Draft.png';
-  await page.screenshot({ path: `./screenshots/${screenshot}` });
+  await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
   results.push({
     result: `SRT-7.4 -- Does Not Exist -> Draft... `,
     image: screenshot,
@@ -59,7 +59,7 @@ exports.SRT71 = async (prefix) => {
   await draftToUnderReview(page);
   await page.waitForTimeout(2000);
   screenshot = 'SRT-7.34_UnderReview.png';
-  await page.screenshot({ path: `./screenshots/${screenshot}` });
+  await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
   results.push({
     result: `SRT-7.34 -- Draft -> Under Review... `,
     image: screenshot,
@@ -72,7 +72,7 @@ exports.SRT71 = async (prefix) => {
   await underReviewToOwnerApproval(page, owner, true);
   await page.waitForTimeout(2000);
   screenshot = 'SRT-7.1_OwnerApproval.png';
-  await page.screenshot({ path: `./screenshots/${screenshot}` });
+  await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
   results.push({
     result: `SRT-7.1 -- Under Review -> Owner Approval... `,
     image: screenshot,
@@ -85,7 +85,7 @@ exports.SRT71 = async (prefix) => {
   await ownerApprovalToApprovedDraft(page, approver);
   screenshot = 'SRT-7.2_Released.png';
   await page.waitForTimeout(4000);
-  await page.screenshot({ path: `./screenshots/${screenshot}` });
+  await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
   results.push({
     result: `SRT-7.2 -- Owner Approval -> Released... `,
     image: screenshot,
@@ -105,7 +105,7 @@ exports.SRT71 = async (prefix) => {
   await selectTableViewLastChild(page);
   screenshot = 'SRT-7.3_Released.png';
   await page.waitForTimeout(1000);
-  await page.screenshot({ path: `./screenshots/${screenshot}` });
+  await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
   results.push({
     result: `SRT-7.3 -- Approved Draft -> Released... `,
     image: screenshot,

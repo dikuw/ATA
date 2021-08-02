@@ -23,15 +23,26 @@ const TitleDiv = styled.div`
   font-weight: bold;
 `;
 
-
-
 function App() {
 
   const [itemTypes, setitemTypes] = useState([]);
+  const [testFunctions, setTestFunctions] = useState([]);
 
   const getItemTypes = async () => {
     await apis.getItemTypes().then(res => {
       setitemTypes(res.data.itemTypes);
+    })
+  }
+
+  const getTestFunctions = async () => {
+    await apis.getTestFunctions().then(res => {
+      setTestFunctions(res.data.testFunctions);
+    })
+  }
+
+  const testRunner = async () => {
+    await apis.testRunner().then(res => {
+
     })
   }
 
@@ -40,6 +51,7 @@ function App() {
 
     async function initialize() {
       await getItemTypes();
+      await getTestFunctions();
     }
     initialize();
   }, []);
@@ -58,10 +70,13 @@ function App() {
         </ChildContainer>
         <ChildContainer>
           <TitleDiv>Test Functions</TitleDiv>
-          <TestPicker itemTypes={itemTypes} />
+          <TestPicker testFunctions={testFunctions} />
         </ChildContainer>
         <ChildContainer>
-          <TitleDiv>Outputs</TitleDiv>
+          <button onClick={testRunner}>Run Test(s)</button>
+        </ChildContainer>
+        <ChildContainer>
+          <TitleDiv>Output</TitleDiv>
         </ChildContainer>
       </Container>
     </div>

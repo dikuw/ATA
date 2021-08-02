@@ -11,15 +11,15 @@ const Container = styled.div`
 `;
 
 export default function TestPicker(props) {
-  if (props.itemTypes.length < 1) {
+  if (props.testFunctions.length < 1) {
     return <div>{"Loading... please wait"}</div>
   }
-  if (props.itemTypes) {
+  if (props.testFunctions) {
     return (
       <Container>
         <select name="list-box" multiple>
-          {props.itemTypes.map( (itemType) => 
-            <option value={itemType.srt1ID}>{itemType.itemPrefix} {itemType.title}</option>
+          {props.testFunctions.map( (testFunction) => 
+            <option value={testFunction.testID}>{testFunction.testTitle}</option>
           )}
         </select>
       </Container>
