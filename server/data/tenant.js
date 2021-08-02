@@ -1,0 +1,1 @@
+exports.tenant = 'https://test-company.qms-dry-run.nemedio.com/';
