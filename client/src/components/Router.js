@@ -5,7 +5,6 @@ import NotFound from './NotFound';
 
 const Router = () => (
   <BrowserRouter>
-    <ScrollToTop />
     <Switch>
       <Route path="/" component={App}/>
       <Route component={NotFound}/>

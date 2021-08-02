@@ -18,10 +18,11 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: top;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding-left: 1vw;
 }
 
 .App-link {
