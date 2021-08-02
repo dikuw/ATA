@@ -22,7 +22,7 @@ export default function ItemTypePicker(props) {
     return (
       <Container>
         {props.itemTypes.map( (itemType) => 
-          <Item>
+          <Item key={itemType.srt1ID}>
             <label>
               <input type="checkbox" id={itemType.srt1ID} name={itemType.title} value={itemType.itemPrefix} />
               <span>{itemType.itemPrefix}</span>

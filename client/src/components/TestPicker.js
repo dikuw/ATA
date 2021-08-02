@@ -19,7 +19,7 @@ export default function TestPicker(props) {
       <Container>
         <select name="list-box" multiple>
           {props.testFunctions.map( (testFunction) => 
-            <option value={testFunction.testID}>{testFunction.testTitle}</option>
+            <option key={testFunction.testID} value={testFunction.testID}>{testFunction.testTitle}</option>
           )}
         </select>
       </Container>
