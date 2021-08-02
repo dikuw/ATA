@@ -11,7 +11,7 @@ function App() {
   });
 
   useEffect(() => {
-
+    const itemTypes = await getItemTypes();
   });
 
   return (
