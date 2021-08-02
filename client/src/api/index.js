@@ -5,6 +5,7 @@ const api = axios.create({
   baseURL: process.env.REACT_APP_BASEURL
 });
 
+export const getItemTypes = () => api.get(`/getItemTypes`);
 export const testRunner = payload => api.post('/testRunner', payload);
 
 const apis = {
