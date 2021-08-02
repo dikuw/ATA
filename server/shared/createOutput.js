@@ -38,7 +38,7 @@ exports.createDoc = (fileName, testTitle, results) => {
         new Paragraph({
           children: [
             new ImageRun({
-              data: fs.readFileSync(`../tests/screenshots/${image}`),
+              data: fs.readFileSync(`./tests/screenshots/${image}`),
               transformation: {
                 width: 400,
                 height: 200,
@@ -55,6 +55,6 @@ exports.createDoc = (fileName, testTitle, results) => {
   });
 
   Packer.toBuffer(doc).then((buffer) => {
-    fs.writeFileSync(`../tests/output/${fileName}.docx`, buffer);
+    fs.writeFileSync(`./tests/output/${fileName}.docx`, buffer);
   });
 }
