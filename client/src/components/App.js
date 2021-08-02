@@ -16,11 +16,13 @@ function App() {
   }
 
   useEffect(() => {
+    document.title = "ATA by Nemedio";
+
     async function initialize() {
       await getItemTypes();
     }
     initialize();
-  });
+  }, []);
 
   return (
     <div className="App">
