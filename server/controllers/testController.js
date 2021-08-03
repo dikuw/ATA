@@ -8,7 +8,7 @@ exports.testRunner = async (req, res) => {
     await SRT72(req.body.itemPrefix);
   } catch (err) {
     console.log(err);
+    return res.json({ error: err });
   }
-  
   return res.json({ success: true });
 }
