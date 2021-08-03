@@ -31,12 +31,26 @@ const SubtitleDiv = styled.div`
 function App() {
 
   const [itemTypes, setitemTypes] = useState([]);
+  const [selectedItemTypes, setSelectedItemTypes] = useState([]);
   const [testFunctions, setTestFunctions] = useState([]);
 
   const getItemTypes = async () => {
     await apis.getItemTypes().then(res => {
       setitemTypes(res.data.itemTypes);
     })
+  }
+  
+  const addSelectedItemType = (item) => {
+    let newSelectedItemTypes = [ ...selectedItemTypes ];
+    newSelectedItemTypes.push(item);
+    setSelectedItemTypes(newSelectedItemTypes);
+  }
+
+  const removeSelectedItemType = (item) => {
+    let newSelectedItemTypes = [ ...selectedItemTypes ];
+    const itemToRemove = newSelectedItemTypes.findIndex((i) => i === item);
+    newSelectedItemTypes.splice(itemToRemove, 1);
+    setSelectedItemTypes(newSelectedItemTypes);
   }
 
   const getTestFunctions = async () => {
@@ -46,7 +60,9 @@ function App() {
   }
 
   const testRunner = async () => {
-    const payload = { "itemPrefix": "DRV" };
+    //  TODO: update to be an array of item prefixes checked in the UI
+    //  i.e. it will be the selectedItemTypes state
+    const payload = { "itemPrefix": "SOP" };
 
     await apis.testRunner(payload).then(res => {
 
@@ -78,7 +94,11 @@ function App() {
         <ChildContainer>
           <TitleDiv>Select Item Type(s)</TitleDiv>
           <SubtitleDiv>Generic Non-Singletons</SubtitleDiv>
-          <ItemTypePicker itemTypes={itemTypes} />
+          <ItemTypePicker 
+            itemTypes={itemTypes} 
+            addSelectedItemType={addSelectedItemType}
+            removeSelectedItemType={removeSelectedItemType}
+          />
         </ChildContainer>
         <ChildContainer>
           <button onClick={testRunner}>Run Test(s)</button>
