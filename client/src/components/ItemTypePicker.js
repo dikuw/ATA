@@ -15,6 +15,15 @@ const Item = styled.div`
 `;
 
 export default function ItemTypePicker(props) {
+
+  const handleChange = (e) => {
+    if (e.target.checked) {
+      props.addSelectedItemType(e.target.value);
+    } else {
+      props.removeSelectedItemType(e.target.value);
+    }
+  }
+
   if (props.itemTypes.length < 1) {
     return <div>{"Loading... please wait"}</div>
   }
@@ -22,9 +31,9 @@ export default function ItemTypePicker(props) {
     return (
       <Container>
         {props.itemTypes.map( (itemType) => 
-          <Item key={itemType.srt1ID}>
+          <Item key={itemType.srt1ID} >
             <label>
-              <input type="checkbox" id={itemType.srt1ID} name={itemType.title} value={itemType.itemPrefix} />
+              <input type="checkbox" id={itemType.srt1ID} name={itemType.title} value={itemType.itemPrefix} onClick={handleChange} />
               <span>{itemType.itemPrefix}</span>
             </label>
           </Item>
