@@ -62,7 +62,7 @@ function App() {
   const testRunner = async () => {
     //  TODO: update to be an array of item prefixes checked in the UI
     //  i.e. it will be the selectedItemTypes state
-    const payload = { "itemPrefix": "SOP" };
+    const payload = { "itemPrefix": selectedItemTypes[0] };
 
     await apis.testRunner(payload).then(res => {
 
