@@ -23,6 +23,11 @@ const TitleDiv = styled.div`
   font-weight: bold;
 `;
 
+const SubtitleDiv = styled.div`
+  font-size: 1.0em;
+  font-style: italic;
+`;
+
 function App() {
 
   const [itemTypes, setitemTypes] = useState([]);
@@ -42,7 +47,7 @@ function App() {
 
   const testRunner = async () => {
     const payload = { "itemPrefix": "DRV" };
-    
+
     await apis.testRunner(payload).then(res => {
 
     })
@@ -67,12 +72,13 @@ function App() {
       </header>
       <Container>
         <ChildContainer>
-          <TitleDiv>Item Types</TitleDiv>
-          <ItemTypePicker itemTypes={itemTypes} />
+          <TitleDiv>Select Test Function(s)</TitleDiv>
+          <TestPicker testFunctions={testFunctions} />
         </ChildContainer>
         <ChildContainer>
-          <TitleDiv>Test Functions</TitleDiv>
-          <TestPicker testFunctions={testFunctions} />
+          <TitleDiv>Select Item Type(s)</TitleDiv>
+          <SubtitleDiv>Generic Non-Singletons</SubtitleDiv>
+          <ItemTypePicker itemTypes={itemTypes} />
         </ChildContainer>
         <ChildContainer>
           <button onClick={testRunner}>Run Test(s)</button>
