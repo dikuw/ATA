@@ -37,6 +37,8 @@ exports.SRT71 = async (prefix) => {
 
   const { itemPrefix, dataValue, user, owner, approver, module, headerCategory, category, sort } = itemType;
 
+  console.log(`Testing SRT-7 1. Normal Path with CO ${sort}. ${itemPrefix}...`);
+
   let results = [];
   let screenshot = "";
 
