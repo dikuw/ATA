@@ -5,7 +5,7 @@ const { SRT72 } = require('../tests/SRT-7-2_normal_wo_CO');
 
 exports.testRunner = async (req, res) => {
   try {
-    await SRT72(req.body.itemPrefix);
+    await SRT72(req.body.itemPrefix[0]);
   } catch (err) {
     console.log(err);
     return res.json({ error: err });
