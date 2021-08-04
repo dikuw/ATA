@@ -33,6 +33,7 @@ function App() {
   const [itemTypes, setitemTypes] = useState([]);
   const [selectedItemTypes, setSelectedItemTypes] = useState([]);
   const [testFunctions, setTestFunctions] = useState([]);
+  const [selectedTestFunctions, setSelectedTestFunctions] = useState([]);
 
   const getItemTypes = async () => {
     await apis.getItemTypes().then(res => {
@@ -71,10 +72,27 @@ function App() {
     })
   }
 
+  const addSelectedTestFunction = (test) => {
+    let newSelectedTestFunctions = [];
+    // let newSelectedTestFunctions = [ ...selectedTestFunctions ];
+    newSelectedTestFunctions.push(test);
+    setSelectedTestFunctions(newSelectedTestFunctions);
+  }
+
+  const removeSelectedTestFunction = (test) => {
+    let newSelectedTestFunctions = [ ...selectedTestFunctions ];
+    const testToRemove = newSelectedTestFunctions.findIndex((i) => i === test);
+    newSelectedTestFunctions.splice(testToRemove, 1);
+    setSelectedTestFunctions(newSelectedTestFunctions);
+  }
+
   const testRunner = async () => {
     //  TODO: update to be an array of item prefixes checked in the UI
     //  i.e. it will be the selectedItemTypes state
-    const payload = { "itemPrefix": selectedItemTypes };
+    const payload = { 
+      "itemPrefix": selectedItemTypes,
+      "testFunction": selectedTestFunctions
+    };
 
     await apis.testRunner(payload).then(res => {
 
@@ -101,7 +119,11 @@ function App() {
       <Container>
         <ChildContainer>
           <TitleDiv>Select Test Function(s)</TitleDiv>
-          <TestPicker testFunctions={testFunctions} />
+          <TestPicker 
+            testFunctions={testFunctions} 
+            addSelectedTestFunction={addSelectedTestFunction}
+            removeSelectedTestFunction={removeSelectedTestFunction}
+          />
         </ChildContainer>
         <ChildContainer>
           <TitleDiv>Select Item Type(s)</TitleDiv>

@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  max-width: 6vw;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -10,18 +9,30 @@ const Container = styled.div`
   padding: 4px;
 `;
 
+const StyledSelect = styled.select`
+  width: 16vw;
+  height: 60vh;
+`;
+
 export default function TestPicker(props) {
+
+  const handleChange = (e) => {
+    props.addSelectedTestFunction(e.target.value);
+  }
+
   if (props.testFunctions.length < 1) {
     return <div>{"Loading... please wait"}</div>
   }
+
   if (props.testFunctions) {
     return (
       <Container>
-        <select name="list-box" multiple>
+        <StyledSelect name="list-box" multiple>
+        {/* <option key={0} value={"All"}>{"All Tests"}</option> */}
           {props.testFunctions.map( (testFunction) => 
-            <option key={testFunction.testID} value={testFunction.testID}>{testFunction.testTitle}</option>
+            <option key={testFunction.testID} value={testFunction.testID} onClick={handleChange}>{testFunction.testTitle}</option>
           )}
-        </select>
+        </StyledSelect>
       </Container>
     );
   }

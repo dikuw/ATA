@@ -6,10 +6,22 @@ const { SRT73 } = require('../tests/SRT-7-3_nullifications');
 
 exports.testRunner = async (req, res) => {
   let response = [];
-  const request = req.body.itemPrefix
-  for (const item of request) {
+  const items = req.body.itemPrefix;
+  const [ test ] = req.body.testFunction;
+  for (const item of items) {
     try {
-      await SRT73(item);
+      switch(test) {
+        case "SRT71":
+          await SRT71(item);
+          break;
+        case "SRT72":
+          await SRT72(item);
+          break;
+        case "SRT73":
+          await SRT73(item);
+          break;
+        default:
+      }
     } catch (err) {
       response.push({
         item: item,
