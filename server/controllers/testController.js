@@ -2,13 +2,14 @@
 
 const { SRT71 } = require('../tests/SRT-7-1_normal_w_CO');
 const { SRT72 } = require('../tests/SRT-7-2_normal_wo_CO');
+const { SRT73 } = require('../tests/SRT-7-3_nullifications');
 
 exports.testRunner = async (req, res) => {
   let response = [];
   const request = req.body.itemPrefix
   for (const item of request) {
     try {
-      await SRT72(item);
+      await SRT73(item);
     } catch (err) {
       response.push({
         item: item,
