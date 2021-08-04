@@ -3,6 +3,7 @@
 const { SRT71 } = require('../tests/SRT-7-1_normal_w_CO');
 const { SRT72 } = require('../tests/SRT-7-2_normal_wo_CO');
 const { SRT73 } = require('../tests/SRT-7-3_nullifications');
+const { SRT74 } = require('../tests/SRT-7-4_retirement_w_CO');
 
 exports.testRunner = async (req, res) => {
   let response = [];
@@ -19,6 +20,9 @@ exports.testRunner = async (req, res) => {
           break;
         case "SRT73":
           await SRT73(item);
+          break;
+        case "SRT74":
+          await SRT74(item);
           break;
         default:
       }

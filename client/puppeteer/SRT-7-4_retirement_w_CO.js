@@ -30,7 +30,7 @@ const switchUser = async (page, user, module, headerCategory, category) => {
 
 const itemNamePrefix = 'SRT-7 4. Retirement with CO';
 
-const itemTypesFilter = ["POL"];
+const itemTypesFilter = ["TPN"];
 const exclude = ["DRV", "D-UND", "D-REQ", "MIT", "STD", "FRM", "RKN"];
 
 let filteredItemTypes = itemTypes.filter((el) => {
