@@ -41,7 +41,6 @@ function App() {
   }
   
   const addSelectedItemType = (item) => {
-    console.log(item);
     let newSelectedItemTypes = [ ...selectedItemTypes ];
     newSelectedItemTypes.push(item);
     setSelectedItemTypes(newSelectedItemTypes);

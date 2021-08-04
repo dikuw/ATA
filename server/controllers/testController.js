@@ -4,11 +4,27 @@ const { SRT71 } = require('../tests/SRT-7-1_normal_w_CO');
 const { SRT72 } = require('../tests/SRT-7-2_normal_wo_CO');
 
 exports.testRunner = async (req, res) => {
-  try {
-    await SRT72(req.body.itemPrefix[0]);
-  } catch (err) {
-    console.log(err);
-    return res.json({ error: err });
+  let response = [];
+  const request = req.body.itemPrefix
+  for (const item of request) {
+    try {
+      await SRT72(item);
+    } catch (err) {
+      response.push({
+        item: item,
+        error: err,
+      });
+    }
   }
-  return res.json({ success: true });
+  // await request.forEach(async (item) => {
+  //   try {
+  //     await SRT72(item);
+  //   } catch (err) {
+  //     response.push({
+  //       item: item,
+  //       error: err,
+  //     });
+  //   }
+  // });
+  return res.json({ success: response });
 }
