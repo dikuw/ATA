@@ -16,6 +16,7 @@ exports.testRunner = async (req, res) => {
       });
     }
   }
+  //  //  This runs tests in parallel
   // await request.forEach(async (item) => {
   //   try {
   //     await SRT72(item);
