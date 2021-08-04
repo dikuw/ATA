@@ -41,6 +41,7 @@ function App() {
   }
   
   const addSelectedItemType = (item) => {
+    console.log(item);
     let newSelectedItemTypes = [ ...selectedItemTypes ];
     newSelectedItemTypes.push(item);
     setSelectedItemTypes(newSelectedItemTypes);
@@ -51,6 +52,18 @@ function App() {
     const itemToRemove = newSelectedItemTypes.findIndex((i) => i === item);
     newSelectedItemTypes.splice(itemToRemove, 1);
     setSelectedItemTypes(newSelectedItemTypes);
+  }
+
+  const addAllItemTypes = () => {
+    let newSelectedItemTypes = [];
+    itemTypes.forEach(item => {
+      newSelectedItemTypes.push(item.itemPrefix);
+    })
+    setSelectedItemTypes(newSelectedItemTypes);
+  }
+
+  const removeAllItemTypes = () => {
+    setSelectedItemTypes([]);
   }
 
   const getTestFunctions = async () => {
@@ -98,6 +111,8 @@ function App() {
             itemTypes={itemTypes} 
             addSelectedItemType={addSelectedItemType}
             removeSelectedItemType={removeSelectedItemType}
+            addAllItemTypes={addAllItemTypes}
+            removeAllItemTypes={removeAllItemTypes}
           />
         </ChildContainer>
         <ChildContainer>

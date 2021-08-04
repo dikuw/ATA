@@ -24,12 +24,24 @@ export default function ItemTypePicker(props) {
     }
   }
 
+  const selectAll = (e) => {
+    //  update state
+    e.target.checked ? props.addAllItemTypes() : props.removeAllItemTypes();
+    //  update UI
+    Array.from(document.querySelectorAll('input[type="checkbox"]'))
+      .forEach((checkbox) => { checkbox.checked = e.target.checked; });
+  }
+
   if (props.itemTypes.length < 1) {
     return <div>{"Loading... please wait"}</div>
   }
   if (props.itemTypes) {
     return (
       <Container>
+        <label>
+          <input type="checkbox" id="0" name="All" value="All" onClick={selectAll} />
+          <span>Select All</span>
+        </label>
         {props.itemTypes.map( (itemType) => 
           <Item key={itemType.srt1ID} >
             <label>
