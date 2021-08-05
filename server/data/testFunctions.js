@@ -35,4 +35,10 @@ exports.testFunctions = [
     testFunction: 'SRT-7-6_retirement_nullifications',
     itemTypeFilter: 'Generic Non-Singletons',
   },
+  {
+    testID: 'SRS55_7_1',
+    testTitle: 'SRS-55 Audit Trail for SRT-7.1 Under Review -> Owner Approval',
+    testFunction: 'SRT-55_for_SRT-7.1',
+    itemTypeFilter: 'Generic Non-Singletons',
+  },
 ]
