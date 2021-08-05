@@ -4,9 +4,12 @@ import styled from 'styled-components';
 import apis from '../api/index';
 import '../styles/App.css';
 
+import Header from './Header';
 import ItemTypePicker from './ItemTypePicker';
 import TestPicker from './TestPicker';
 import Output from './Output';
+
+
 
 const Container = styled.div`
   display: flex;
@@ -95,14 +98,18 @@ function App() {
       "itemPrefix": selectedItemTypes,
       "testFunction": selectedTestFunctions
     };
-    
+    if (selectedTestFunctions.length === 0) {
+      setOutput("You must select at least one test to run.");
+      return;
+    }
     setOutput("Running tests...");
 
     await apis.testRunner(payload).then(res => {
       console.log(res);
       let newOutput = "";
       res.data.success.forEach(item => {
-        newOutput += item.result + "\n";
+        newOutput += item.result;
+        newOutput += "\n";
       })
       setOutput(newOutput);
     })
@@ -119,13 +126,18 @@ function App() {
     initialize();
   }, []);
 
+  const reset = () => {
+    setSelectedItemTypes([]);
+    setSelectedTestFunctions([]);
+    setOutput("");
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Automated Testing Tool
-        </p>
-      </header>
+      <Header 
+        reset={reset}
+        testRunner={testRunner}
+      />
       <Container>
         <ChildContainer>
           <TitleDiv>Select Test Function(s)</TitleDiv>
@@ -147,7 +159,7 @@ function App() {
           />
         </ChildContainer>
         <ChildContainer>
-          <button onClick={testRunner}>Run Test(s)</button>
+          
         </ChildContainer>
         <ChildContainer>
           <TitleDiv>Output</TitleDiv>
