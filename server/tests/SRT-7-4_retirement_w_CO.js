@@ -114,5 +114,7 @@ exports.SRT74 = async (prefix) => {
 
   await browser.close();
 
+  return `SRT-7 4. Retirement with CO ${sort}. ${itemPrefix} test passed`;
+
 };
 

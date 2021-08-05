@@ -5,15 +5,19 @@ exports.testRunner = async (req, res) => {
   const [ test ] = req.body.testFunction;
   
   let response = [];
-  
+
   for (const item of items) {
     try {
-      await Handler[test](item);
-    } catch (err) {
-      console.log(err);
+      let successMessage = await Handler[test](item);
       response.push({
         item: item,
-        error: err,
+        result: successMessage,
+      });
+    } catch (err) {
+      console.error(err);
+      response.push({
+        item: item,
+        result: err,
       });
     }
   }

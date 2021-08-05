@@ -91,4 +91,6 @@ exports.SRT72 = async (prefix) => {
 
   await browser.close();
 
+  return `SRT-7 2. Normal Path without CO ${sort}. ${itemPrefix} test passed`;
+
 };

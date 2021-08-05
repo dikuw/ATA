@@ -17,11 +17,11 @@ const StyledDiv = styled.div`
   text-align: left;
 `;
 
-export default function Output() {
+export default function Output(props) {
   return (
     <Container>
       <StyledDiv>
-        Let's run a test...
+        {props.output}
       </StyledDiv>
     </Container>
   );

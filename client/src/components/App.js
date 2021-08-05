@@ -35,6 +35,7 @@ function App() {
   const [selectedItemTypes, setSelectedItemTypes] = useState([]);
   const [testFunctions, setTestFunctions] = useState([]);
   const [selectedTestFunctions, setSelectedTestFunctions] = useState([]);
+  const [output, setOutput] = useState("");
 
   const getItemTypes = async () => {
     await apis.getItemTypes().then(res => {
@@ -94,9 +95,16 @@ function App() {
       "itemPrefix": selectedItemTypes,
       "testFunction": selectedTestFunctions
     };
+    
+    setOutput("Running tests...");
 
     await apis.testRunner(payload).then(res => {
-
+      console.log(res);
+      let newOutput = "";
+      res.data.success.forEach(item => {
+        newOutput += item.result + "\n";
+      })
+      setOutput(newOutput);
     })
   }
 
@@ -104,6 +112,7 @@ function App() {
     document.title = "ATA by Nemedio";
 
     async function initialize() {
+      setOutput("Let's run a test...");
       await getItemTypes();
       await getTestFunctions();
     }
@@ -142,7 +151,9 @@ function App() {
         </ChildContainer>
         <ChildContainer>
           <TitleDiv>Output</TitleDiv>
-          <Output></Output>
+          <Output
+            output={output}
+           />
         </ChildContainer>
       </Container>
     </div>

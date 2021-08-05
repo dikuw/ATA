@@ -145,5 +145,7 @@ exports.SRT76 = async (prefix) => {
 
   await browser.close();
 
+  return `SRT-7 6. Retirement Nullifications ${sort}. ${itemPrefix} test passed`;
+
 }
 
