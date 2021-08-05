@@ -85,9 +85,9 @@ exports.SRT72 = async (prefix) => {
   });
   await logout(page);
 
-  createDoc(`SRT-7 1. Normal Path without CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow Normal Path without CO: ${itemPrefix}`, results);
+  createDoc(`SRT-7 2. Normal Path without CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow Normal Path without CO: ${itemPrefix}`, results);
 
-  console.log(`SRT-7 1. Normal Path without CO ${sort}. ${itemPrefix} test passed`);
+  console.log(`SRT-7 2. Normal Path without CO ${sort}. ${itemPrefix} test passed`);
 
   await browser.close();
 
