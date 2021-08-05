@@ -10,7 +10,7 @@ const Container = styled.div`
 `;
 
 const StyledSelect = styled.select`
-  width: 16vw;
+  width: 30vw;
   height: 60vh;
 `;
 

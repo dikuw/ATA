@@ -6,6 +6,7 @@ import '../styles/App.css';
 
 import ItemTypePicker from './ItemTypePicker';
 import TestPicker from './TestPicker';
+import Output from './Output';
 
 const Container = styled.div`
   display: flex;
@@ -141,6 +142,7 @@ function App() {
         </ChildContainer>
         <ChildContainer>
           <TitleDiv>Output</TitleDiv>
+          <Output></Output>
         </ChildContainer>
       </Container>
     </div>
