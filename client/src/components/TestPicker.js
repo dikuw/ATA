@@ -27,7 +27,7 @@ export default function TestPicker(props) {
   if (props.testFunctions) {
     return (
       <Container>
-        <StyledSelect name="list-box" multiple>
+        <StyledSelect name="list-box" defaultValue={props.selectedTestFunctions} multiple>
         {/* <option key={0} value={"All"}>{"All Tests"}</option> */}
           {props.testFunctions.map( (testFunction) => 
             <option key={testFunction.testID} value={testFunction.testID} onClick={handleChange}>{testFunction.testTitle}</option>

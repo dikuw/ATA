@@ -128,7 +128,7 @@ function App() {
   const reset = () => {
     setSelectedItemTypes([]);
     setSelectedTestFunctions([]);
-    setOutput("");
+    setOutput(["Let's run a test..."]);
   };
 
   return (
@@ -142,6 +142,7 @@ function App() {
           <TitleDiv>Select Test Function(s)</TitleDiv>
           <TestPicker 
             testFunctions={testFunctions} 
+            selectedTestFunctions={selectedTestFunctions}
             addSelectedTestFunction={addSelectedTestFunction}
             removeSelectedTestFunction={removeSelectedTestFunction}
           />
@@ -151,6 +152,7 @@ function App() {
           <SubtitleDiv>Generic Non-Singletons</SubtitleDiv>
           <ItemTypePicker 
             itemTypes={itemTypes} 
+            selectedItemTypes={selectedItemTypes}
             addSelectedItemType={addSelectedItemType}
             removeSelectedItemType={removeSelectedItemType}
             addAllItemTypes={addAllItemTypes}
