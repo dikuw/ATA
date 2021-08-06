@@ -21,7 +21,7 @@ export default function Output(props) {
   return (
     <Container>
       <StyledDiv>
-        {props.output}
+        {`${props.output}`}
       </StyledDiv>
     </Container>
   );

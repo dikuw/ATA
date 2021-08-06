@@ -108,7 +108,7 @@ function App() {
       console.log(res);
       let newOutput = "";
       res.data.success.forEach(item => {
-        newOutput += item.result;
+        newOutput += item.item + ": " + item.result;
         newOutput += "\n";
       })
       setOutput(newOutput);

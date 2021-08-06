@@ -17,7 +17,7 @@ exports.testRunner = async (req, res) => {
       console.error(err);
       response.push({
         item: item,
-        result: err,
+        result: err.name,
       });
     }
   }
