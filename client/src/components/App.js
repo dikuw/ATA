@@ -38,7 +38,7 @@ function App() {
   const [selectedItemTypes, setSelectedItemTypes] = useState([]);
   const [testFunctions, setTestFunctions] = useState([]);
   const [selectedTestFunctions, setSelectedTestFunctions] = useState([]);
-  const [output, setOutput] = useState("");
+  const [output, setOutput] = useState([]);
 
   const getItemTypes = async () => {
     await apis.getItemTypes().then(res => {
@@ -99,17 +99,16 @@ function App() {
       "testFunction": selectedTestFunctions
     };
     if (selectedTestFunctions.length === 0) {
-      setOutput("You must select at least one test to run.");
+      setOutput(["You must select at least one test to run."]);
       return;
     }
-    setOutput("Running tests...");
+    setOutput(["Running tests..."]);
 
     await apis.testRunner(payload).then(res => {
       console.log(res);
-      let newOutput = "";
+      let newOutput = [];
       res.data.success.forEach(item => {
-        newOutput += item.item + ": " + item.result;
-        newOutput += "\n";
+        newOutput.push(item.item + ": " + item.result);
       })
       setOutput(newOutput);
     })
@@ -119,7 +118,7 @@ function App() {
     document.title = "ATA by Nemedio";
 
     async function initialize() {
-      setOutput("Let's run a test...");
+      setOutput(["Let's run a test..."]);
       await getItemTypes();
       await getTestFunctions();
     }

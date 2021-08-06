@@ -17,11 +17,19 @@ const StyledDiv = styled.div`
   text-align: left;
 `;
 
+const StyledP = styled.p`
+  margin: 4px;
+`;
+
 export default function Output(props) {
   return (
     <Container>
       <StyledDiv>
-        {`${props.output}`}
+        {props.output.map((item, index) => 
+          <StyledP key={index}>
+            {item}
+          </StyledP>
+        )}
       </StyledDiv>
     </Container>
   );
