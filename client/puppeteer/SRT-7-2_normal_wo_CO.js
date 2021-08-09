@@ -21,7 +21,9 @@ const itemNamePrefix = 'SRT-7 2. Normal Path without CO';
 const itemTypesFilter = ["DRV"];
 const exclude = ["DRV", "D-UND", "D-REQ", "STD", "ARC", "D-RAD", "D-TM", "MIT", "DUD", "IFU", "TPN", "DO", "VVP", "D-VVPRO", "VAL", "IQI", "IPI", "FDI", "SOP", "FRM", "RKN"];
 exclude.push("MSD", "POL", "CQP", "QPL", "WI", "TMP", "D-CAPA", "V-URS", "V-REQ", "V-PLN", "V-DRS", "V-VPRO", "V-RPT", "V-TM", "N-URS", "URS");
-//  currently broken on Dry Run: "RKN", "MIT", "IFU", "TPN", "VAL", "FRM", "IQI", "IPI", "FDI", "V-DRS",
+//  currently broken on Dry Run: 
+//    "MIT" (Builder view crashes), "IFU" (change-justify issue), "TPN" (Builder view crashes), "VAL" (change-justify issue), 
+//    "FRM" (change-justify issue), "IQI" (change-justify issue), "IPI" (change-justify issue), "FDI" (change-justify issue),
 
 let filteredItemTypes = itemTypes.filter((el) => {
   return itemTypesFilter.some((f) => {
