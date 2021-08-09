@@ -125,7 +125,7 @@ function App() {
   const reset = () => {
     setSelectedItemTypes([]);
     setSelectedTestFunctions([]);
-    // setOutput(["Let's run a test..."]);
+    setOutput(["Let's run a test..."]);
   };
 
   return (
