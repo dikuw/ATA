@@ -46,6 +46,7 @@ exports.SRT73 = async (prefix) => {
   const { itemPrefix, dataValue, user, owner, approver, module, headerCategory, category, sort } = itemType;
 
   console.log(`Testing SRT-7 3. Nullifications ${sort}. ${itemPrefix}...`);
+  console.log(`Test start time: ${new Date().toLocaleTimeString()}`)
 
   let results = [];
   let screenshot = "";
@@ -187,8 +188,9 @@ exports.SRT73 = async (prefix) => {
 
   createDoc(`SRT-7 3. Nullifications ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow Nullifications: ${itemPrefix}`, results);
 
+  console.log(`Test end time: ${new Date().toLocaleTimeString()}`);
   console.log(`SRT-7 3. Nullifications ${sort}. ${itemPrefix} test passed`);
-
+  
   await browser.close();
 
   return `SRT-7 3. Nullifications ${sort}. ${itemPrefix} test passed`;
