@@ -1,25 +1,16 @@
 const { Handler } = require('../tests/index');
 
 exports.testRunner = async (req, res) => {
-  const items = req.body.itemPrefix;
+  const item = req.body.itemPrefix;
   const [ test ] = req.body.testFunction;
-  
-  let response = [];
 
-  for (const item of items) {
-    try {
-      let successMessage = await Handler[test](item);
-      response.push({
-        item: item,
-        result: successMessage,
-      });
-    } catch (err) {
-      response.push({
-        item: item,
-        result: err.name,
-      });
-    }
+  try {
+    let successMessage = await Handler[test](item);
+    return res.json({ result: successMessage });
+  } catch (err) {
+    return res.json({ result: err.name });
   }
+  
   //  //  This runs tests in parallel
   // await request.forEach(async (item) => {
   //   try {
@@ -31,5 +22,5 @@ exports.testRunner = async (req, res) => {
   //     });
   //   }
   // });
-  return res.json({ success: response });
+  
 }
