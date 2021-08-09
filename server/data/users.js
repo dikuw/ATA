@@ -23,4 +23,8 @@ exports.users = [
     user: "tech_lead_user",
     userName: "Tammy Tech",
   },
+  {
+    user: "rm_lead_user",
+    userName: "Ryan Risk",
+  },
 ]
