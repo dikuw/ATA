@@ -9,8 +9,6 @@ import ItemTypePicker from './ItemTypePicker';
 import TestPicker from './TestPicker';
 import Output from './Output';
 
-
-
 const Container = styled.div`
   display: flex;
   justify-content: space-evenly;
@@ -92,43 +90,42 @@ function App() {
   }
 
   const testRunner = async () => {
-    //  TODO: update to be an array of item prefixes checked in the UI
-    //  i.e. it will be the selectedItemTypes state
-    const payload = { 
-      "itemPrefix": selectedItemTypes,
-      "testFunction": selectedTestFunctions
-    };
     if (selectedTestFunctions.length === 0) {
       setOutput(["You must select at least one test to run."]);
       return;
-    }
+    };
+
     setOutput(["Running tests..."]);
 
-    await apis.testRunner(payload).then(res => {
-      console.log(res);
-      let newOutput = [];
-      res.data.success.forEach(item => {
-        newOutput.push(item.item + ": " + item.result);
-      })
-      setOutput(newOutput);
-    })
+    for (const item of selectedItemTypes) {
+      const payload = { 
+        "itemPrefix": item,
+        "testFunction": selectedTestFunctions,
+        "output": output
+      };
+      await apis.testRunner(payload).then(res => {
+        setOutput((prevOutput) => [...prevOutput, `${item}: ${res.data.result}`]);
+      });
+    }
   }
 
   useEffect(() => {
     document.title = "ATA by Nemedio";
 
     async function initialize() {
-      setOutput(["Let's run a test..."]);
       await getItemTypes();
       await getTestFunctions();
+      setOutput(["Let's run a test..."]);
     }
+
     initialize();
+
   }, []);
 
   const reset = () => {
     setSelectedItemTypes([]);
     setSelectedTestFunctions([]);
-    setOutput(["Let's run a test..."]);
+    // setOutput(["Let's run a test..."]);
   };
 
   return (
