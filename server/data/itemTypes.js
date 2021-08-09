@@ -113,7 +113,7 @@ exports.itemTypes = [
     headerCategory: "category-risk-management",
     category: "category-risk-notes",
     user: "biz_lead_user",
-    owner: "reg_aff_lead_user",
+    owner: "rm_lead_user",
     approver: "qa_lead_user",
     sort: 8,
   },
