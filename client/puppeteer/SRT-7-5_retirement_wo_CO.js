@@ -28,6 +28,12 @@ const itemNamePrefix = 'SRT-7 5. Retirement without CO';
 
 const itemTypesFilter = ["DRV"];
 const exclude = ["DRV", "D-UND", "D-REQ", "MIT", "STD", "FRM", "RKN"];
+//  currently broken on Dry Run: 
+//    "STD" (Pending Trace Matrix), "ARC" (Pending Trace Matrix),  "RKN" (Pending Trace Matrix), 
+//    "MIT" (Builder view crashes), "IFU" (change-justify collision), "TPN" (Builder view crashes)
+//    "VAL" (change-justify collision), "FRM" (Pending Trace Matrix),  "IPI" (Pending Trace Matrix),  
+//    "FDI" (Pending Trace Matrix),  "URS" (Pending Trace Matrix), "SRS" (Pending Trace Matrix),  
+//    "SRT" (Pending Trace Matrix),  "DRS" (Pending Trace Matrix),  
 
 let filteredItemTypes = itemTypes.filter((el) => {
   return itemTypesFilter.some((f) => {
