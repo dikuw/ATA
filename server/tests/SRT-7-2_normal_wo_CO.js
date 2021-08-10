@@ -34,6 +34,7 @@ exports.SRT72 = async (prefix) => {
   const { itemPrefix, dataValue, user, owner, approver, module, headerCategory, category, sort } = itemType;
 
   console.log(`Testing SRT-7 2. Normal Path without CO ${sort}. ${itemPrefix}...`);
+  console.log(`Test start time: ${new Date().toLocaleTimeString()}`);
 
   let results = [];
   let screenshot = "";
@@ -87,6 +88,7 @@ exports.SRT72 = async (prefix) => {
 
   createDoc(`SRT-7 2. Normal Path without CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow Normal Path without CO: ${itemPrefix}`, results);
 
+  console.log(`Test end time: ${new Date().toLocaleTimeString()}`);
   console.log(`SRT-7 2. Normal Path without CO ${sort}. ${itemPrefix} test passed`);
 
   await browser.close();
