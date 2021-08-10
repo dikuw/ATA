@@ -24,6 +24,8 @@ const itemNamePrefix = 'SRT-7 1. Normal Path with CO';
 
 const itemTypesFilter = ["POL"];
 const exclude = ["DRV", "D-UND", "D-REQ", "MIT", "STD", "FRM", "RKN"];
+//  currently broken on Dry Run: 
+//    "MIT" (Builder view crashes), "TPN" (Builder view crashes), 
 
 let filteredItemTypes = itemTypes.filter((el) => {
   return itemTypesFilter.some((f) => {
