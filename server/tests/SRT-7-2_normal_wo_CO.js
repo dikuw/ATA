@@ -15,7 +15,6 @@ const { underReviewToOwnerApproval, ownerApprovalToReleased } = require('../shar
 const { createDoc } = require('../shared/createOutput');
 
 const { getItemType } = require('../shared/helpers');
-const { resourceLimits } = require('node:worker_threads');
 
 exports.SRT72 = async (prefix) => {
   let itemType = getItemType(prefix)[0];
