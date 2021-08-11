@@ -18,7 +18,7 @@ exports.createDoc = (fileName, testTitle, results) => {
   );
 
   results.forEach(item => {
-    let { result, image } = item;
+    let { result, resultString, image } = item;
     children.push(
       new Paragraph({
         children: [
@@ -26,7 +26,7 @@ exports.createDoc = (fileName, testTitle, results) => {
             text: `${result}`,
           }),
           new TextRun({
-            text: 'test passed',
+            text: resultString,
             italics: true,
           }),
         ],

@@ -48,6 +48,7 @@ exports.SRT72 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.4 -- Does Not Exist -> Draft... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     //  SRT-7.34 -- Draft -> Under Review
@@ -57,6 +58,7 @@ exports.SRT72 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.34 -- Draft -> Under Review... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     await logout(page);
@@ -70,6 +72,7 @@ exports.SRT72 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.1 -- Under Review -> Owner Approval... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     await logout(page);
@@ -83,6 +86,7 @@ exports.SRT72 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.5 -- Owner Approval -> Released... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     await logout(page);
@@ -96,6 +100,7 @@ exports.SRT72 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `ERROR... `,
+      resultString: `test error`,
       image: screenshot,
     });
 

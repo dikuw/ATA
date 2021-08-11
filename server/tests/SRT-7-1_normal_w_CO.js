@@ -55,6 +55,7 @@ exports.SRT71 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.4 -- Does Not Exist -> Draft... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     //  SRT-7.34 -- Draft -> Under Review
@@ -64,6 +65,7 @@ exports.SRT71 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.34 -- Draft -> Under Review... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     await logout(page);
@@ -77,6 +79,7 @@ exports.SRT71 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.1 -- Under Review -> Owner Approval... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     await logout(page);
@@ -90,6 +93,7 @@ exports.SRT71 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.2 -- Owner Approval -> Released... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     // SRT-7.3 -- Approved Draft -> Released
@@ -110,6 +114,7 @@ exports.SRT71 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.3 -- Approved Draft -> Released... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     await logout(page);
@@ -123,6 +128,7 @@ exports.SRT71 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `ERROR... `,
+      resultString: `test error`,
       image: screenshot,
     });
 
@@ -130,7 +136,7 @@ exports.SRT71 = async (prefix) => {
     resultsString = `❌ ERROR: SRT-7 1. Normal Path with CO ${sort}. ${itemPrefix}: ${err}`;
 
   } finally {
-    
+
     await browser.close();
 
     console.log(`🕕 Test end time: ${new Date().toLocaleTimeString()}`);
