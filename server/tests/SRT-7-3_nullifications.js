@@ -62,6 +62,7 @@ exports.SRT73 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.4 -- Does Not Exist -> Draft... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     //  SRT-7.34 -- Draft -> Under Review
@@ -71,6 +72,7 @@ exports.SRT73 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.34 -- Draft -> Under Review... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     await switchUser(page, owner, module, headerCategory, category);
@@ -81,6 +83,7 @@ exports.SRT73 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.35 -- Under Review -> Draft... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     //  SRT-7.34 -- Draft -> Under Review
@@ -93,6 +96,7 @@ exports.SRT73 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.1 -- Under Review -> Owner Approval... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     //  SRT-7.107 -- Owner Approval -> Void
@@ -102,6 +106,7 @@ exports.SRT73 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.107 -- Owner Approval -> Void... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     //  SRT-7.1 -- Under Review -> Owner Approval
@@ -111,6 +116,7 @@ exports.SRT73 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.1 -- Under Review -> Owner Approval... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     await switchUser(page, approver, module, headerCategory, category);
@@ -121,6 +127,7 @@ exports.SRT73 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.6 -- Owner Approval -> Rejected... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     await switchUser(page, user, module, headerCategory, category);
@@ -131,6 +138,7 @@ exports.SRT73 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.7 -- Rejected -> Draft... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     //  SRT-7.34 -- Draft -> Under Review
@@ -146,6 +154,7 @@ exports.SRT73 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.2 -- Owner Approval -> Released... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     //  SRT-7.93 -- Approved Draft -> Void
@@ -155,6 +164,7 @@ exports.SRT73 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.93 -- Approved Draft -> Void... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     await switchUser(page, owner, module, headerCategory, category);
@@ -168,6 +178,7 @@ exports.SRT73 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.127 -- Under Review -> Canceled... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     //  SRT-7.113 -- Draft -> Canceled
@@ -179,6 +190,7 @@ exports.SRT73 = async (prefix) => {
     await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
     results.push({
       result: `SRT-7.113 -- Draft -> Canceled... `,
+      resultString: `test passed`,
       image: screenshot,
     });
     await logout(page);
