@@ -22,6 +22,11 @@ const { getItemType } = require('../shared/helpers');
 
 exports.SRT71 = async (prefix) => {
   let itemType = getItemType(prefix)[0];
+  const { itemPrefix, dataValue, user, owner, approver, module, headerCategory, category, sort } = itemType;
+
+  let resultsString = "";
+  let results = [];
+  let screenshot = "";
 
   const itemNamePrefix = 'SRT-7 1. Normal Path with CO';
 
@@ -32,95 +37,106 @@ exports.SRT71 = async (prefix) => {
   });
 
   const page = await browser.newPage();
-  
   await page.goto(tenant);
 
-  const { itemPrefix, dataValue, user, owner, approver, module, headerCategory, category, sort } = itemType;
+  console.log(`❗❗❗ Testing SRT-7 1. Normal Path with CO ${sort}. ${itemPrefix}...`);
+  console.log(`🕒 Test start time: ${new Date().toLocaleTimeString()}`);
 
-  console.log(`Testing SRT-7 1. Normal Path with CO ${sort}. ${itemPrefix}...`);
+  try {
+    //  first create the change order for testing
+    await login(page, changeOrderOwner);
+    await createItem(page, "change_order", "SRT-7 1. CO");
+    await logout(page);
+    await login(page, user);
+    //  SRT-7.4 -- Does Not Exist -> Draft
+    await createItem(page, dataValue, itemNamePrefix);
+    await page.waitForTimeout(2000);
+    screenshot = 'SRT-7.4_Draft.png';
+    await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
+    results.push({
+      result: `SRT-7.4 -- Does Not Exist -> Draft... `,
+      image: screenshot,
+    });
+    //  SRT-7.34 -- Draft -> Under Review
+    await draftToUnderReview(page);
+    await page.waitForTimeout(2000);
+    screenshot = 'SRT-7.34_UnderReview.png';
+    await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
+    results.push({
+      result: `SRT-7.34 -- Draft -> Under Review... `,
+      image: screenshot,
+    });
+    await logout(page);
+    await login(page, owner);
+    await openTableView(page, module, headerCategory, category);
+    await selectTableViewLastChild(page);
+    //  SRT-7.1 -- Under Review -> Owner Approval
+    await underReviewToOwnerApproval(page, owner, true);
+    await page.waitForTimeout(2000);
+    screenshot = 'SRT-7.1_OwnerApproval.png';
+    await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
+    results.push({
+      result: `SRT-7.1 -- Under Review -> Owner Approval... `,
+      image: screenshot,
+    });
+    await logout(page);
+    await login(page, approver);
+    await openTableView(page, module, headerCategory, category);
+    await selectTableViewLastChild(page);
+    //  SRT-7.2 -- Owner Approval -> Approved Draft
+    await ownerApprovalToApprovedDraft(page, approver);
+    screenshot = 'SRT-7.2_Released.png';
+    await page.waitForTimeout(4000);
+    await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
+    results.push({
+      result: `SRT-7.2 -- Owner Approval -> Released... `,
+      image: screenshot,
+    });
+    // SRT-7.3 -- Approved Draft -> Released
+    await logout(page);
+    await login(page, changeOrderOwner);
+    await openTableView(page, "Quality Management System", "", "category-change-order");
+    await selectTableViewLastChild(page);
+    await draftToReadyForClosure(page, changeOrderOwner);
+    await logout(page);
+    await login(page, changeOrderApprover);
+    await openTableView(page, "Quality Management System", "", "category-change-order");
+    await selectTableViewLastChild(page);
+    await readyForClosureToClosed(page, changeOrderApprover);
+    await openTableView(page, module, headerCategory, category);
+    await selectTableViewLastChild(page);
+    screenshot = 'SRT-7.3_Released.png';
+    await page.waitForTimeout(1000);
+    await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
+    results.push({
+      result: `SRT-7.3 -- Approved Draft -> Released... `,
+      image: screenshot,
+    });
+    await logout(page);
 
-  let results = [];
-  let screenshot = "";
+    createDoc(`SRT-7 1. Normal Path with CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow Normal Path with CO: ${itemPrefix}`, results);
+    resultsString = `🙌 SRT-7 1. Normal Path with CO ${sort}. ${itemPrefix} test passed`;
 
-  //  first create the change order for testing
-  await login(page, changeOrderOwner);
-  await createItem(page, "change_order", "SRT-7 1. CO");
-  await logout(page);
+  } catch (err) {
 
-  await login(page, user);
-  //  SRT-7.4 -- Does Not Exist -> Draft
-  await createItem(page, dataValue, itemNamePrefix);
-  await page.waitForTimeout(2000);
-  screenshot = 'SRT-7.4_Draft.png';
-  await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
-  results.push({
-    result: `SRT-7.4 -- Does Not Exist -> Draft... `,
-    image: screenshot,
-  });
-  //  SRT-7.34 -- Draft -> Under Review
-  await draftToUnderReview(page);
-  await page.waitForTimeout(2000);
-  screenshot = 'SRT-7.34_UnderReview.png';
-  await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
-  results.push({
-    result: `SRT-7.34 -- Draft -> Under Review... `,
-    image: screenshot,
-  });
-  await logout(page);
-  await login(page, owner);
-  await openTableView(page, module, headerCategory, category);
-  await selectTableViewLastChild(page);
-  //  SRT-7.1 -- Under Review -> Owner Approval
-  await underReviewToOwnerApproval(page, owner, true);
-  await page.waitForTimeout(2000);
-  screenshot = 'SRT-7.1_OwnerApproval.png';
-  await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
-  results.push({
-    result: `SRT-7.1 -- Under Review -> Owner Approval... `,
-    image: screenshot,
-  });
-  await logout(page);
-  await login(page, approver);
-  await openTableView(page, module, headerCategory, category);
-  await selectTableViewLastChild(page);
-  //  SRT-7.2 -- Owner Approval -> Approved Draft
-  await ownerApprovalToApprovedDraft(page, approver);
-  screenshot = 'SRT-7.2_Released.png';
-  await page.waitForTimeout(4000);
-  await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
-  results.push({
-    result: `SRT-7.2 -- Owner Approval -> Released... `,
-    image: screenshot,
-  });
-  // SRT-7.3 -- Approved Draft -> Released
-  await logout(page);
-  await login(page, changeOrderOwner);
-  await openTableView(page, "Quality Management System", "", "category-change-order");
-  await selectTableViewLastChild(page);
-  await draftToReadyForClosure(page, changeOrderOwner);
-  await logout(page);
-  await login(page, changeOrderApprover);
-  await openTableView(page, "Quality Management System", "", "category-change-order");
-  await selectTableViewLastChild(page);
-  await readyForClosureToClosed(page, changeOrderApprover);
-  await openTableView(page, module, headerCategory, category);
-  await selectTableViewLastChild(page);
-  screenshot = 'SRT-7.3_Released.png';
-  await page.waitForTimeout(1000);
-  await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
-  results.push({
-    result: `SRT-7.3 -- Approved Draft -> Released... `,
-    image: screenshot,
-  });
+    screenshot = 'error.png';
+    await page.screenshot({ path: `./tests/screenshots/${screenshot}` });
+    results.push({
+      result: `ERROR... `,
+      image: screenshot,
+    });
 
-  await logout(page);
+    createDoc(`ERROR SRT-7 1. Normal Path with CO ${sort}. ${itemPrefix}`, `ERROR: SRT-7 1. Normal Path with CO: ${itemPrefix}`, results);
+    resultsString = `❌ ERROR: SRT-7 1. Normal Path with CO ${sort}. ${itemPrefix}: ${err}`;
 
-  createDoc(`SRT-7 1. Normal Path with CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow Normal Path with CO: ${itemPrefix}`, results);
+  } finally {
+    
+    await browser.close();
 
-  console.log(`SRT-7 1. Normal Path with CO ${sort}. ${itemPrefix} test passed`);
+    console.log(`🕕 Test end time: ${new Date().toLocaleTimeString()}`);
+    console.log(resultsString);
 
-  await browser.close();
-
-  return `SRT-7 1. Normal Path with CO ${sort}. ${itemPrefix} test passed`;
+    return resultsString;
+  }
 
 };

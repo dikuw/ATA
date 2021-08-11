@@ -88,7 +88,6 @@ exports.SRT72 = async (prefix) => {
     await logout(page);
 
     createDoc(`SRT-7 2. Normal Path without CO ${sort}. ${itemPrefix}`, `SRT-7 Generic Workflow Normal Path without CO: ${itemPrefix}`, results);
-
     resultsString = `🙌 SRT-7 2. Normal Path without CO ${sort}. ${itemPrefix} test passed`;
 
   } catch (err) {
@@ -101,7 +100,6 @@ exports.SRT72 = async (prefix) => {
     });
 
     createDoc(`ERROR SRT-7 2. Normal Path without CO ${sort}. ${itemPrefix}`, `ERROR: SRT-7 Generic Workflow Normal Path without CO: ${itemPrefix}`, results);
-
     resultsString = `❌ ERROR: SRT-7 2. Normal Path without CO ${sort}. ${itemPrefix}: ${err}`;
 
   } finally {
