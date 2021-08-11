@@ -4,12 +4,15 @@ exports.testRunner = async (req, res) => {
   const item = req.body.itemPrefix;
   const [ test ] = req.body.testFunction;
 
-  try {
-    let successMessage = await Handler[test](item);
-    return res.json({ result: successMessage });
-  } catch (err) {
-    return res.json({ result: err.name });
-  }
+  let successMessage = await Handler[test](item);
+  return res.json({ result: successMessage });
+
+  // try {
+  //   let successMessage = await Handler[test](item);
+  //   return res.json({ result: successMessage });
+  // } catch (err) {
+  //   return res.json({ result: err.name });
+  // }
   
   //  //  This runs tests in parallel
   // await request.forEach(async (item) => {
